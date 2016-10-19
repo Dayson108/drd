@@ -1,1 +1,75 @@
-hi
+<!doctype html>
+<html>
+  <head>
+<title>Dice Roller</title>
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="dicerolls.js"></script>
+<script src="chatcommands.js"></script>
+
+<script>
+var versionNumber = 1.13;
+console.log("API Ready v" + versionNumber)
+var socket = io.connect();
+var LocalResultList = [];
+
+socket.on('20DiceResult', function(msg){
+	updateResultList(msg);
+});
+socket.on('sidedDiceResult', function(msg){
+	updateResultList(msg);
+});
+
+
+
+
+</script>
+</head>
+<body>
+
+<div id="Dice" style="height:500px; width:100%; position:absolute; top:0px; left:0px; background-color:#BEC6DD; ">
+
+<form>
+  Name:<input type="text" id="UserName" size="10"><input type="checkbox" id="PrivateRoll">Private
+</form>
+  <hr>
+  
+    1d20 + <input type="text" id="ADd20P" size="1"><button id="rollADd20" onclick="rolldAD20()">Roll</button>
+    <br><input type="radio" name="adv" id="RadioAdv" value="Adv" checked="checked"> Advantage
+    <input type="radio" name="adv" id="RadioDis" value="Dis"> Disadvantage
+  
+  <hr>
+  1d20 + <input type="text" id="d20P" size="1"><button id="rollADd20" onclick="rolld20()">Roll</button><br>
+  <input type="text" id="d12" size="1">d12 + <input type="text" id="d12P" size="1"><button id="rolld12" onclick="rolld12()">Roll</button><br>
+  <input type="text" id="d10"  size="1">d10 + <input type="text" id="d10P" size="1"><button id="rolld10" onclick="rolld10()">Roll</button><br>
+  <input type="text" id="d8"  size="1">d8 + <input type="text" id="d8P" size="1"><button id="rolld8" onclick="rolld8()">Roll</button><br>
+  <input type="text" id="d6"  size="1">d6 + <input type="text" id="d6P" size="1"><button id="rolld6" onclick="rolld6()">Roll</button><br>
+  <input type="text" id="d4"  size="1">d4 + <input type="text" id="d4P" size="1"><button id="rolld4" onclick="rolld4()">Roll</button><br><hr>
+  <button id="clearChatButton" onclick="clearChat()">Clear Chat</button><br>
+</div>  
+
+
+
+<div id="ResultListMain" style="height:100%; width:100%; position:absolute; top:270px; left:0; background-color:#BEC6DD; overflow: auto;">
+<p>King Tomal is a cunt<br>
+He doesn't give a fuck<br>
+if his councilmen die<br>
+he will just lie<br>
+to fill his pockets with gooold.<br>
+<br>
+He will steal your taxes<br>
+Kills councilmen with axes<br>
+He removes your booze<br>
+While you snooze<br>
+Tightening his hooold<br>
+<br>
+Tomal has got to go<br>
+To return this towns glow<br>
+Break his bones<br>
+Take his throne<br>
+Make his body grow coooollld</p>
+</div>
+
+
+
+  </body>
+</html>
