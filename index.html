@@ -18,15 +18,30 @@ socket.on('sidedDiceResult', function(msg){
 	updateResultList(msg);
 });
 
-
-function showOriginalDice(){
+function hideAll(){
+	document.getElementById('Main').style.visibility = 'hidden';
 	document.getElementById('DiceMain').style.visibility = 'hidden';
-	document.getElementById('OriginalDiceMain').style.visibility = 'visible';
+	document.getElementById('OriginalDiceMain').style.visibility = 'hidden';
+	document.getElementById('CharacterStats').style.visibility = 'hidden';
+	document.getElementById('CharacterSheet').style.visibility = 'hidden';
+}
+function showScreen(screen){
+	hideAll();
+	document.getElementById(screen).style.visibility = 'visible';
 }
 
-function showMain(){
-	document.getElementById('DiceMain').style.visibility = 'visible';
-	document.getElementById('OriginalDiceMain').style.visibility = 'hidden';
+
+function SubmitCharacterStats(){
+	if(document.getElementById("STR").value  == 15){
+		document.getElementById("STRP").value = 3;
+	}
+	
+}
+
+function RollCoreStat(thing){
+	
+	
+	//rolld20(number)
 }
 
 </script>
@@ -34,9 +49,10 @@ function showMain(){
 
 <body>
 <nav id="nav" style="background-color:#00004d; position:absolute; left:0px; top:0px; height:100%; width:75px; float:left;">
-  <p><button id="OriginalDiceScreenButton" onclick="showOriginalDice()" style="visibility:visible;">Original</button></p>
-  <p><button id="MainScreenButton" onclick="showMain()" style="visibility:visible;">New</button></p>
-  <p><button id="CharacterSheetButton" onclick="showCharacterSheet()" style="visibility:hidden;">CS</button></p>
+  <p><button id="OriginalDiceScreenButton" onclick="showScreen('OriginalDiceMain')">Original</button></p>
+  <p><button id="MainScreenButton" onclick="showScreen('DiceMain')">New</button></p>
+  <p><button id="CharacterSheetButton" onclick="showScreen('CharacterSheet')">CS</button></p>
+  <p><button id="CharacterStatsButton" onclick="showScreen('CharacterStats')">Stats</button></p>
 </nav>
 
 
@@ -45,12 +61,12 @@ function showMain(){
 
 	<div id="DiceMain" style="height:100%; width:100%; position:absolute; top:0px; left:0px; background-color:#FFFFFF; visibility:hidden;">
 	  <div id="SavingThrowsButtonsMain" style="height:100%; width:150px; background-color:#006600; position: absolute; top:0px; left:0px; overflow: auto;">
-		<button id="StrST" onclick="StrST()">Strength</button><br>
-		<button id="DexSt" onclick="DexST()">Dexterity</button><br>
-		<button id="ConST" onclick="ConST()">Constitution</button><br>
-		<button id="IntST" onclick="IntST()">Intelligence</button><br>
-		<button id="WisST" onclick="WisST()">Wisdom</button><br>
-		<button id="ChrST" onclick="ChrST()">Charisma</button><br>
+		<button id="StrST" onclick="RollStat(document.getElementById("STRP").value)">Strength</button><br>
+		<button id="DexSt" onclick="RollStat(document.getElementById("DEXP").value)">Dexterity</button><br>
+		<button id="ConST" onclick="RollStat(document.getElementById("CONP").value)">Constitution</button><br>
+		<button id="IntST" onclick="RollStat(document.getElementById("INTP").value)">Intelligence</button><br>
+		<button id="WisST" onclick="RollStat(document.getElementById("WISP").value)">Wisdom</button><br>
+		<button id="ChrST" onclick="RollStat(document.getElementById("CHRP").value)">Charisma</button><br>
 	  </div>  
 	  <div id="SkillButtonsMain" style="height:100%; width:150px; background-color:#6600cc; position: absolute; top:0px; left:150px; overflow: auto;">
 		<button id="rollAcrobatics" onclick="rollAcrobatics()">Acrobatics</button>
@@ -88,7 +104,23 @@ function showMain(){
   </p>
   <p>
     Character Name: <input type="text" id="CharacterName" value="Bitchkylt" size="5">Player Name: <input type="text" id="PlayerName" value="Scott" size="5"><br>
+	<input type="text" id="STR" value="15" size="3">STR<br>
+	<input type="text" id="DEX" value="15" size="3">DEX<br>
+	<input type="text" id="CON" value="15" size="3">CON<br>
+	<input type="text" id="INT" value="15" size="3">INT<br>
+	<input type="text" id="WIS" value="15" size="3">WIS<br>
+	<input type="text" id="CHR" value="15" size="3">CHR<br>
+	<button id="SubmitCharacterStats" onclick="SubmitCharacterStats()">Submit</button>
   </p>
+</div>
+
+<div id="CharacterStats" style="height:100%; width:100%; position:absolute; top:0px; left:75px; background-color:#6600cc; visibility:hidden;">
+	<input type="text" id="STRP" size="3">STRP<br>
+	<input type="text" id="DEXP" size="3">DEXP<br>
+	<input type="text" id="CONP" size="3">CONP<br>
+	<input type="text" id="INTP" size="3">INTP<br>
+	<input type="text" id="WISP" size="3">WISP<br>
+	<input type="text" id="CHRP" size="3">CHRP<br>
 </div>
 
 
