@@ -1,24 +1,34 @@
 function claimGMStatus(){
-	MyCharacter.PName = document.getElementById('PlayerName').value;
-	document.getElementById('GMScreenButton').style.visibility = 'visible';
-	showScreen('GMScreen');
-	document.getElementById('clearInitButton').style.visibility = 'visible';
-	
-	var msg = {
-		CName: 'Dungeon Master',
-		PName: MyCharacter.PName
-	};
-	socket.emit('GMSubmitted', msg);
+	MyCharacter.PName = document.getElementById('GMName').value;
+	document.getElementById('NotesScreenButton').style.visibility = 'visible';
+	if(MyCharacter.PName != ""){
+		document.getElementById('GMScreenButton').style.visibility = 'visible';
+		showScreen('GMScreen');
+		document.getElementById('clearInitButton').style.visibility = 'visible';
+		//document.getElementById('GMFunScreenButton').style.visibility = 'visible';
+		
+		var msg = {
+			CName: 'Dungeon Master',
+			PName: MyCharacter.PName
+		};
+		socket.emit('GMSubmitted', msg);
+	}
+	else{
+		document.getElementById('GMName').style.backgroundColor = "red";
+		setTimeout(flashWhite, 1000);
+	}
 }
 
 
 function rollGMDice(sides, plus, diceNum){
 	var tempName = MyCharacter.CName;
 	MyCharacter.CName = document.getElementById('GMRollName').value;
+	if(MyCharacter.CName == ""){MyCharacter.CName = 'Dungeon Master'};
 	var skillNameTemp;
 	if(sides == 20){
 		var adv = GMAdvCheck();
 		skillNameTemp = document.getElementById('GMRollType').value;
+		if(skillNameTemp == ""){ skillNameTemp = 'd20'};
 		rolld20Dice(plus, adv, skillNameTemp)
 	
 	}else{
@@ -31,6 +41,3 @@ function rollGMDice(sides, plus, diceNum){
 	MyCharacter.CName = tempName;
 }
 
-function clearInit(){
-	socket.emit('ClearInit');
-}

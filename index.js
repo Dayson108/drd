@@ -8,6 +8,7 @@ server.listen(process.env.PORT || 3000);
 console.log("listening");
 
 var PlayerList = [];
+var InitList = [];
 var GMData = {
 	CName: "",
 	PName: "",
@@ -19,7 +20,7 @@ app.get('/', function(req, res){
 });
 
 io.on('connection', function(socket){
-	io.to(socket.id).emit('SendStartingData', socket.id, GMData, PlayerList);
+	io.to(socket.id).emit('SendStartingData', socket.id, GMData, PlayerList, InitList);
 	//Recieved by everyone EXCEPT sender 
 	//socket.broadcast.emit('', msg);
 	
@@ -46,7 +47,6 @@ io.on('connection', function(socket){
 			}
 			if(index >= 0){
 				PlayerList.splice(index, 1);
-				
 			}
 		}
  
@@ -76,7 +76,8 @@ io.on('connection', function(socket){
 			playerID: socket.id
 		};
 		PlayerList.push(newPlayer);
-		io.sockets.emit('UpdatePlayerList', PlayerList);
+				io.sockets.emit('UpdatePlayerList', PlayerList);
+		
 	});
 	
 	socket.on('Test', function(){
@@ -88,12 +89,22 @@ io.on('connection', function(socket){
 		io.to(msg.msgToId).emit('PvtMsgRcv', msg);
 	});
 	
-	socket.on('InitRoll', function(msg){
-		io.sockets.emit('UpdateInitList', msg);
+	
+	
+	
+	
+	
+	socket.on('InitRoll', function(input){
+		InitList.push(input);
+		io.sockets.emit('ServerUpdateInitList', InitList);
 	});
 
 	socket.on('ClearInit', function(){
+		InitList = [];
 		io.sockets.emit('ClearInitRecieved');
 	});
+
+
+
 });
 

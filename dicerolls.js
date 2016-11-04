@@ -96,12 +96,14 @@ function rolld20Dice(Plus, adv, skillNameTemp){
 		tempStatus = -1;
 	}
 	
+	
+	
 	if(document.getElementById("PrivateRoll").checked == true){
 		output = {result: tempResult, name: "Private Roll", status: 1, natStatus: tempStatus, skillName: skillNameTemp};
 		updateResultList(output);
 	}
 	else if(document.getElementById("PrivateMessage").checked == true){
-		output = {result: tempResult, name: MyCharacter.CName, status: 5, skillName: skillNameTemp, msgToId: "", msgToName: "", msgFrom: ""}; 
+		output = {result: tempResult, name: MyCharacter.CName, status: 5, skillName: skillNameTemp, msgToId: "", msgToName: "", msgFrom: "", natStatus: tempStatus}; 
 		sendPrivateMessage(output);
 		output.status = 6;
 		updateResultList(output);
@@ -152,23 +154,4 @@ function rollSidedDice(sides, plus, diceNum, skillNameTemp){
 	}
 }//rollSidedDice
 
-
-
-function rollInit(){
-	var myRoll = MyCharacter.DEXP() + Math.floor((Math.random() * 20) + 1);
-	var myStatus = 0;
-	if(myRoll == 20){
-		myStatus = 1;
-	}
-	else if(myRoll == 1){
-		myStatus = -1;
-	}
-	var initRoll = {
-		roll: myRoll,
-		status: myStatus,
-		name: MyCharacter.CName
-	};
-	socket.emit('InitRoll', initRoll);
-	document.getElementById("initbutton").disabled = true;
-}
 

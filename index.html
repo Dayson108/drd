@@ -7,31 +7,16 @@
 <script src="chatcommands.js"></script>
 <script src="CharacterCommands.js"></script>
 <script src="GMCommands.js"></script>
+<script src="InitFunctions.js"></script>
 <script>
 var versionNumber = 3.00;
 console.log("API Ready v" + versionNumber)
 
-/*
-Notes:
--Rolling Init Before a player joins wont pass full init to new player
-	> Move the init list to a server variable
--read/write to file?
--Private To GM
-
-GM Functions:
-- Custom Init List
-- Add Private GM Inits
-- GM add to init list by set value
-*/
-
-
-
-
-
 var LocalResultList = [];
 var LocalPlayerList = [];
-var LocalInitList = [];
 var privateMsgTable = [];
+
+
 var privateLink = {
 	name: "",
 	id: ""
@@ -51,6 +36,9 @@ function hideAll(){
 	document.getElementById('CharacterSheet').style.visibility = 'hidden';
 	document.getElementById('GMScreen').style.visibility = 'hidden';
 	document.getElementById('Login').style.visibility = 'hidden';
+	document.getElementById('GMFunScreen').style.visibility = 'hidden';
+	document.getElementById('Notes').style.visibility = 'hidden';
+	
 	
 }
 function showScreen(screen){
@@ -61,17 +49,52 @@ function showScreen(screen){
 function Login(){
 	MyCharacter.CName = document.getElementById('CharacterName').value;
 	MyCharacter.PName = document.getElementById('PlayerName').value;
-	document.getElementById('Login').style.visibility = 'hidden';
-	showScreen('CharacterSheet');
-	document.getElementById('CharacterSheetButton').style.visibility = 'visible';
-	submitChar();
-	
+	if(MyCharacter.CName != "" && MyCharacter.PName != ""){
+		document.getElementById('Login').style.visibility = 'hidden';
+		showScreen('CharacterSheet');
+		document.getElementById('CharacterSheetButton').style.visibility = 'visible';
+		document.getElementById('NotesScreenButton').style.visibility = 'visible';
+		submitChar();
+	}
+	else{
+		document.getElementById('CharacterName').style.backgroundColor = "red";
+		document.getElementById('PlayerName').style.backgroundColor = "red";
+		setTimeout(flashWhite, 1000);
+	}
+}
+
+function flashWhite(){
+	document.getElementById('GMInitName').style.backgroundColor = "white";
+	document.getElementById('CharacterName').style.backgroundColor = "white";
+	document.getElementById('PlayerName').style.backgroundColor = "white";
+	document.getElementById('GMName').style.backgroundColor = "white";
+	document.getElementById('GMInitNamePrivate').style.backgroundColor = "white";
 }
 
 
+		
+		
 
-		//Name: <input type="text" id="GMA" size="3"> d20+<input type="text" id="GMA" size="1"><button id="rolld4" onclick="">Add</button><br>
-		//Name: <input type="text" id="GMRollName" size="3"> Init:<input type="text" id="GMRollName" size="1"><button id="rolld4" onclick="">Add</button>
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -79,41 +102,105 @@ function Login(){
 //Test Functions Only
 function test(){
 	//socket.emit('Test');
-	
-	
 
-	
+
+
+
+
 }
 function test2(){
 	//socket.emit('Test');
-
+	
 	
 }
 </script>
 </head>
 
 <body>
+<div id="Notes" style="height:100%; width:300px; position:absolute; top:0px; left:75px; background-color:#BEC6DD; visibility:hidden;">
+	D&D App 5e App<br>
+	V. 3.01<br>
+	<br>
+	Future Updates will have notes here as well as known bugs.<br>
+	<br><hr>
+	KNOWN BUGS:<br>
+		<ul>
+		<li>If two players have the same Player and Character Name private message doesn't work correctly</li>
+		<li>Most places that require numbers, don't check if they recieve letters.  This causes glitches in some areas, but ill fix those later.  Just keep your letters and numbers where they belong</li>
+		</ul>
+	<hr>
+	Version 3.0 Update<br>
+		<ul>
+			<li>Added Player List</li>
+			<li>Added Private Chat</li>
+			<li>Added Init List</li>
+			<li>Macros now show their + bonuses</li>
+			<li>Added Save/Load Character</li>
+			<li>Added GM Feature
+				<ul>
+					<li>-Init List Controls</li>
+				</ul>
+			</li>
+		</ul>
+		<hr>
+	Possible Future Uprgrade Ideas<br>
+	(Let me know if any of these are high interest to anyone)<br>
+	<ul>
+		<li>Finish GM Inspiration system</li>
+		<li>GM Seeing Character Stats</li>
+			<ul><li>Passive Perception/Insight</li>
+				<li>Armor Classes</li>
+				<li>Health Tracker</li>
+				<li>Player Save DCs</li>
+			</ul>
+		<li>Weapon Macros</li>
+		<li>Spell Macros</li>
+		<li>Spell System (spellbook tab basically)</li>
+		<li>Personal Macros</li>
+		<li>Some kind of Inventory</li>
+	</ul>
+	<hr>
+
+</div>
+
 <nav id="nav" style="background-color:#00004d; position:absolute; left:0px; top:0px; height:100%; width:75px; float:left;">
   <p><button id="MainScreenButton" onclick="showScreen('Main')" style="visibility:hidden">Dice</button></p>
   <p><button id="CharacterSheetButton" onclick="showScreen('CharacterSheet')" style="visibility:hidden">Character Sheet</button></p>
   <p><button id="CharacterStatsButton" onclick="showScreen('CharacterStatsMenu')" style="visibility:hidden">Stats</button></p>
   <p><button id="GMScreenButton" onclick="showScreen('GMScreen')" style="visibility:hidden">GM</button></p>
+  <p><button id="GMFunScreenButton" onclick="showScreen('GMFunScreen')" style="visibility:hidden">GM Fun</button></p>
+  <p><button id="NotesScreenButton" onclick="showScreen('Notes')" style="visibility:hidden">Version Notes</button></p>
+  
   <button id="testbutton2" onclick="test()" style="visibility:hidden">test</button><br>
   <button id="testbutton4" onclick="test2()" style="visibility:hidden">test2</button><br>
 </nav>
 
 <div id="Login" style="height:100%; width:300px; position:absolute; top:0px; left:75px; background-color:#BEC6DD; visibility:visible;">
-    <button id="loadCharacter" onclick="loadCharacter()">Import Character</button><input type="text" id="loadCharacterInput" size="5" value="IAMGM"><br>
-    Player Name: <input type="text" id="PlayerName" size="5" value="Name"><br>
-	Character Name: <input type="text" id="CharacterName" size="5"><br>
-	<button id="Login" onclick="Login()">Login</button>
-	<hr>
 	<br><br>
-	<button id="ClaimGMButton" onclick="claimGMStatus()">Claim GM Status</button>	
+    Player Name: <input type="text" id="PlayerName" size="5"><br>
+	Character Name: <input type="text" id="CharacterName" size="5"><br>
+	<button id="Login" onclick="Login()">Create</button>
+	<hr>
+	<br>
+	Dungeon Master<br>
+	Name: <input type="text" id="GMName" size="5">
+	<br>
+	<button id="ClaimGMButton" onclick="claimGMStatus()">Claim Dungeon Master Status</button>	
+	<hr><br><br><br><br>
+	Caution: The Import Feature is currently in beta.
+	<br>Please be careful of your copy/pasting 
+	<button id="loadCharacter" onclick="loadCharacter()">Import Character</button><input type="text" id="loadCharacterInput" size="5"><hr>
 </div>
 
 
+
 <div id="GMScreen" style="height:100%; width:300px; position:absolute; top:0px; left:75px; background-color:#BEC6DD; visibility:hidden;">
+	
+	<div id="GMFunScreen" style="height:100%; width:300px; position:absolute; top:0px; left:0px; background-color:#FBE272; visibility:hidden">
+	
+	Empty Space for Future GM function expansion
+	
+	</div>
 	<div id="GMCharName" style="height:40px; width:300px; position:absolute; top:0px; left:0px; background-color:#BEC6DD;">
 		<input type="text" id="GMRollName" size="10" value="Dungeon Master"> Character Name
 		<hr>
@@ -140,11 +227,27 @@ function test2(){
 		<button id="rolld4GM" onclick="rollGMDice('4', Number(document.getElementById('GMd4P').value), document.getElementById('GMd4').value)">Roll</button><br>
 		<hr>
 	</div>
-	<div id="GMAddInit" style="height:40px; width:300px; background-color:#BEC6DD; position: absolute; top:215px; left:0px;">
-		Add to Init List<br>
-		Name: <input type="text" id="GMA" size="3"> d20+<input type="text" id="GMA" size="1"><button id="rolld4" onclick="">Add</button><br>
-		Name: <input type="text" id="GMRollName" size="3"> Init:<input type="text" id="GMRollName" size="1"><button id="rolld4" onclick="">Add</button>
+	<div id="GMAddInitMenu" style="height:80px; width:300px; background-color:#BEC6DD; position: absolute; top:215px; left:0px;">
+		Add to <b>Public</b> Init List<br>
+		<form style="margin-bottom:0px"> 
+		<input type="radio" name="adv" id="GMRollInit" checked="checked">d20+<input type="text" id="GMAddInitPlus" size="1">
+		<input type="radio" name="adv" id="GMAddInit"> Init:<input type="text" id="GMAddInitValue" size="1">
+		</form>
+		Name: <input type="text" id="GMInitName" size="3">
+		<button id="GMAddInitButton" onclick="GMAddToInit()">Add</button>
 		<hr>
+	
+		Add to <b>Private</b> Init List<br>
+		<form style="margin-bottom:0px"> 
+		<input type="radio" name="adv" id="GMRollPrivateInit" checked="checked">d20+<input type="text" id="GMAddInitPlusPrivate" size="1">
+		<input type="radio" name="adv" id="GMAddPrivateInit"> Init:<input type="text" id="GMAddInitPrivate" size="1">
+		</form>
+		Name: <input type="text" id="GMInitNamePrivate" size="3">
+		<button id="GMAddInitButtonPrivate" onclick="GMAddToPrivateInit()">Add</button>
+		<hr>
+		
+
+		
 	</div>
 </div>
 
@@ -156,9 +259,9 @@ function test2(){
 		<hr>
 	</div>
 	<div id="DiceMod" style="height:40px; width:300px; background-color#BEC6DD; position:absolute; top:40px; left:0px;">
-		<input type="text" id="rollMod" size="1">Modifier to the Next d20 Roll<hr>
+		<input type="text" id="rollMod" size="1">+/- Roll Mod&nbsp&nbsp&nbsp&nbsp<img src="inspired.png" style="height:20px; visibility:hidden;"><input type="checkbox" id="InspiredCheck" style="visibility:hidden"><hr>
 	</div>
-	<div id="DiceMain" style="height:135px; width:300px; background-color#BEC6DD; position:absolute; top:80px; left:0px;">
+	<div id="DiceMain" style="height:135px; width:300px; background-color#BEC6DD; position:absolute; top:85px; left:0px;">
 		1d20 + <input type="text" id="d20P" size="1">
 		<button id="rolld20" onclick="rollSkill(document.getElementById('d20P').value, 'd20')">Roll</button><br>
 		<input type="text" id="d12" size="1">d12 + <input type="text" id="d12P" size="1">
@@ -245,7 +348,6 @@ function test2(){
 	<input type="checkbox" id="PerformanceProfCheck">Performance<br>
 	<input type="checkbox" id="PersuasionProfCheck">Persuasion<br>
 	<input type="checkbox" id="ReligionProfCheck">Religion<br>
-	<input type="checkbox" id="ReligionProfCheck">Religion<br>
 	<input type="checkbox" id="SleightOfHandProfCheck">Sleight Of Hand<br>
 	<input type="checkbox" id="StealthProfCheck">Stealth<br>
 	<input type="checkbox" id="SurvivalProfCheck">Survival<hr>
@@ -254,7 +356,7 @@ function test2(){
   </p>
 </div>
 
-<div id="CharacterStatsMenu" style="height:100%; width:100%; position:absolute; top:0px; left:75px; background-color:#BEC6DD; visibility:hidden;">
+<div id="CharacterStatsMenu" style="height:100%; width:300px; position:absolute; top:0px; left:75px; background-color:#BEC6DD; visibility:hidden;">
 	<p id="CharacterStats"></p>
 	<input type="text" id="SaveString" size="20"><button id="saveCharacter" onclick="saveCharacter()">Save</button><br>
 	<button id="resetStats" onclick="resetStats()">Reset Stats</button>
@@ -280,14 +382,14 @@ function test2(){
 </div>
 
 <div id="PlayerLists" style="height:100%; width:200px; padding:5px; position:absolute; top:0px; left:795px;">
-	<div id="PlayerList" style="height:200px; width:200px; background-color:#BEC6DD; padding:5px; position:absolute; top:0px; left:0px; overflow: auto;">
+	<div id="PlayerList" style="height:250px; width:200px; background-color:#BEC6DD; padding:5px; position:absolute; top:0px; left:0px; overflow: auto;">
 	</div>
-	<div id="Line3" style="height:5px; width:210px; background-color:#000000; position:absolute; top:200px; left:0px;">
+	<div id="Line3" style="height:5px; width:210px; background-color:#000000; position:absolute; top:250px; left:0px;">
 	</div>
-	<div id="InitList" style="height:100%; width:200px; background-color:#BEC6DD; padding:5px; position:absolute; top:210px; left:0px; overflow: auto;">
-	<button id="initbutton" onclick="rollInit()" style="visibility:hidden">Init</button>
-	<button id="clearInitButton" onclick="clearInit()" style="visibility:hidden">Clear Init</button><hr>
-	<p id="initList"></p>
+	<div id="InitListMenu" style="height:100%; width:200px; background-color:#BEC6DD; padding:5px; position:absolute; top:260px; left:0px; overflow: auto;">
+		<button id="initbutton" onclick="rollInit()" style="visibility:hidden">Roll Init</button>
+		<button id="clearInitButton" onclick="clearInit()" style="visibility:hidden">Clear Init</button><hr>
+		<p id="initList"></p>
 	</div>
 </div>
 </body></html>

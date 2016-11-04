@@ -230,9 +230,8 @@ function SubmitCharacterStats(){
 	document.getElementById('MainScreenButton').style.visibility = 'visible';
 	document.getElementById('initbutton').style.visibility = 'visible';
 	skillButtonNameChange();
-	showScreen('Main');
 	UpdateStats();
-	
+	showScreen('Main');
 }
 
 function plusMinusString(number){
@@ -315,26 +314,108 @@ function UpdateStats(){
 	document.getElementById('CharacterStats').innerHTML = tempString;
 }
 
+
+
 function loadCharacter(){
-	//MyCharacter = JSON.parse(document.getElementById('loadCharacterInput').value);
-	//document.getElementById('Login').style.visibility = 'hidden';
-	//showScreen('DiceMain');
-	//document.getElementById('MainScreenButton').style.visibility = 'visible';
-	//document.getElementById('CharacterStatsButton').style.visibility = 'visible';
-	//document.getElementById('CharacterSheetButton').style.visibility = 'hidden';
-	//UpdateStats();
-	//getPlayerId();
-	//var msg;
-	//socket.emit('PlayerJoined', msg);
-	input = document.getElementById('loadCharacterInput').value;
-	MyCharacter.PName = document.getElementById('PlayerName').value;
-	if (input == 'IAMGM'){
-		claimGMStatus();
-	}
 	
+	
+	MyCharacterInput = JSON.parse(document.getElementById('loadCharacterInput').value);
 
+	
+	
+		//MyCharacter.CName = MyCharacterInput.CName;
+		MyCharacter.CName = "steve";
+		MyCharacter.PName = MyCharacterInput.PName;
+		MyCharacter.CharacterLevel = MyCharacterInput.CharacterLevel;
+		MyCharacter.ProfBonus = MyCharacterInput.ProfBonus;
+		MyCharacter.STR = MyCharacterInput.STR;
+    	MyCharacter.DEX = MyCharacterInput.DEX;
+    	MyCharacter.CON = MyCharacterInput.CON;
+		MyCharacter.INT = MyCharacterInput.INT;
+    	MyCharacter.WIS = MyCharacterInput.WIS;
+    	MyCharacter.CHA = MyCharacterInput.CHA;
+		
+		MyCharacter.profSTR = MyCharacterInput.profSTR;
+		MyCharacter.profDEX = MyCharacterInput.profDEX;
+		MyCharacter.profCON = MyCharacterInput.profCON;
+		MyCharacter.profINT = MyCharacterInput.profINT;
+		MyCharacter.profWIS = MyCharacterInput.profWIS;
+		MyCharacter.profCHA = MyCharacterInput.profCHA;
+		MyCharacter.profAcrobatics = MyCharacterInput.profAcrobatics;
+		MyCharacter.profAnimalHandling = MyCharacterInput.profAnimalHandling;
+		MyCharacter.profArcana = MyCharacterInput.profArcana;
+		MyCharacter.profAthletics = MyCharacterInput.profAthletics;
+		MyCharacter.profDeception = MyCharacterInput.profDeception;
+		MyCharacter.profHistory = MyCharacterInput.profHistory;
+		MyCharacter.profInsight = MyCharacterInput.profInsight;
+		MyCharacter.profIntimidation = MyCharacterInput.profIntimidation;
+		MyCharacter.profInvestigation = MyCharacterInput.profInvestigation;
+		MyCharacter.profMedicine = MyCharacterInput.profMedicine;
+		MyCharacter.profNature = MyCharacterInput.profNature;
+		MyCharacter.profPerception = MyCharacterInput.profPerception;
+		MyCharacter.profPerformance = MyCharacterInput.profPerformance;
+		MyCharacter.profPersuasion = MyCharacterInput.profPersuasion;
+		MyCharacter.profReligion = MyCharacterInput.profReligion;
+		MyCharacter.profSleightOfHand = MyCharacterInput.profSleightOfHand;
+		MyCharacter.profStealth = MyCharacterInput.profStealth;
+		MyCharacter.profSurvival = MyCharacterInput.profSurvival;
+	
+		recheckBoxes();
+		document.getElementById('MainScreenButton').style.visibility = 'visible';
+	document.getElementById('CharacterStatsButton').style.visibility = 'visible';
+	document.getElementById('CharacterSheetButton').style.visibility = 'hidden';
+	UpdateStats();
+	var msg = {
+		CName: MyCharacter.CName,
+		PName: MyCharacter.PName
+	};
+	socket.emit('playerSubmitted', msg);
+	skillButtonNameChange();
+	showScreen('Main');
 }
-
+function recheckBoxes(){
+	if(MyCharacter.profSTR){document.getElementById("STRProfCheck").checked = true}
+	if(MyCharacter.profDEX){document.getElementById("DEXProfCheck").checked = true}
+	if(MyCharacter.profCON){document.getElementById("CONProfCheck").checked = true}
+	if(MyCharacter.profINT){document.getElementById("INTProfCheck").checked = true}
+	if(MyCharacter.profWIS){document.getElementById("WISProfCheck").checked = true}
+	if(MyCharacter.profCHA){document.getElementById("CHAProfCheck").checked = true}
+	
+	
+	if(MyCharacter.profAcrobatics){document.getElementById("AcrobaticsProfCheck").checked = true}
+	if(MyCharacter.profAnimalHandling){document.getElementById("AnimalHandlingProfCheck").checked = true}
+	if(MyCharacter.profArcana){document.getElementById("ArcanaProfCheck").checked = true}
+	if(MyCharacter.profAthletics){document.getElementById("AthleticsProfCheck").checked = true}
+	if(MyCharacter.profDeception){document.getElementById("DeceptionProfCheck").checked = true}
+	if(MyCharacter.profHistory){document.getElementById("HistoryProfCheck").checked = true}
+	if(MyCharacter.profInsight){document.getElementById("InsightProfCheck").checked = true}
+	if(MyCharacter.profIntimidation){document.getElementById("IntimidationProfCheck").checked = true}
+	if(MyCharacter.profInvestigation){document.getElementById("InvestigationProfCheck").checked = true}
+	if(MyCharacter.profMedicine){document.getElementById("MedicineProfCheck").checked = true}
+	if(MyCharacter.profNature){document.getElementById("NatureProfCheck").checked = true}
+	if(MyCharacter.profPerception){document.getElementById("PerceptionProfCheck").checked = true}
+	if(MyCharacter.profPerformance){document.getElementById("PerformanceProfCheck").checked = true}
+	if(MyCharacter.profPersuasion){document.getElementById("PersuasionProfCheck").checked = true}
+	if(MyCharacter.profReligion){document.getElementById("ReligionProfCheck").checked = true}
+	if(MyCharacter.profSleightOfHand){document.getElementById("SleightOfHandProfCheck").checked = true}
+	if(MyCharacter.profStealth){document.getElementById("StealthProfCheck").checked = true}
+	if(MyCharacter.profSurvival){document.getElementById("SurvivalProfCheck").checked = true}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}
 function saveCharacter(){
 	document.getElementById('SaveString').value = JSON.stringify(MyCharacter);
 }
