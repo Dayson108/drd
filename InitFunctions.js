@@ -96,10 +96,7 @@ function updateInitList(ServerInitList){
 		list.push(tempInit)
 	}
 	
-	console.log('start');
-	console.log(JSON.stringify(list));
-	
-	
+
 	//sort list here
 
 	list.sort(function(a,b){return b.roll - a.roll});

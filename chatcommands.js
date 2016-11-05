@@ -120,8 +120,6 @@ function updatePlayerList(){
 		tempOutput += " - " + LocalPlayerList[i-1].playerName;
 		tempOutput += "<hr>";
 	}
-	console.log("There are " + (LocalPlayerList.length) + " players.");
-	
 	//var height = (34*LocalPlayerList.length)+20;
 	//document.getElementById('PlayerList').style.height = String(height) + 'px';
 	//document.getElementById('Line3').style.top = String(height) + 'px';

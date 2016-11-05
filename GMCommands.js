@@ -1,6 +1,7 @@
 function claimGMStatus(){
 	MyCharacter.PName = document.getElementById('GMName').value;
 	document.getElementById('NotesScreenButton').style.visibility = 'visible';
+	document.getElementById('CommentsScreenButton').style.visibility = 'visible';
 	if(MyCharacter.PName != ""){
 		document.getElementById('GMScreenButton').style.visibility = 'visible';
 		showScreen('GMScreen');
@@ -33,7 +34,6 @@ function rollGMDice(sides, plus, diceNum){
 	
 	}else{
 		var diceNum =
-		console.log('GM D' + sides + ' Rolled');
 		skillNameTemp = 'd' + sides;
 		rollSidedDice(sides, plus, diceNum, skillNameTemp);	
 	}

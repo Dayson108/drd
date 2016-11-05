@@ -317,7 +317,9 @@ function UpdateStats(){
 
 
 function loadCharacter(){
-	
+	if(document.getElementById('loadCharacterInput').value == "IAMDEV"){
+		document.getElementById('DeveloperScreenButton').style.visibility = 'visible'
+	}
 	
 	MyCharacterInput = JSON.parse(document.getElementById('loadCharacterInput').value);
 		MyCharacter.CName = MyCharacterInput.CName;

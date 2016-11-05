@@ -16,8 +16,8 @@ socket.on('UpdateGM', function(GMInput){
 	updatePlayerList();
 	updatePrivateMsgList();
 	if(GMData.ID != ""){
-		document.getElementById('ClaimGMButton').style.visibility = 'hidden';
-		document.getElementById('GMName').style.visibility = 'hidden';
+		//document.getElementById('ClaimGMButton').style.visibility = 'hidden';
+		document.getElementById('GMLogin').style.visibility = 'hidden';
 	}
 });
 
@@ -32,7 +32,8 @@ socket.on('SendStartingData', function(IDNum, GMDataRecieved, ServerPlayerList, 
 	MyCharacter.playerID = IDNum;
 	GMData = GMDataRecieved;
 	if(GMData.ID != ""){
-		document.getElementById('ClaimGMButton').style.visibility = 'hidden';
+		//document.getElementById('ClaimGMButton').style.visibility = 'hidden';
+		document.getElementById('GMLogin').style.visibility = 'hidden';
 	}
 	updateInitList(ServerInitList);
 });
@@ -44,6 +45,8 @@ socket.on('ClearGM', function(GMDataRecieved){
 socket.on('PvtMsgRcv', function(msg){
 		updateResultList(msg);
 });
+
+
 
 
 

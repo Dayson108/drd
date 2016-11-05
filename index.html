@@ -9,7 +9,7 @@
 <script src="GMCommands.js"></script>
 <script src="InitFunctions.js"></script>
 <script>
-var versionNumber = 3.03;
+var versionNumber = 3.04;
 console.log("API Ready v" + versionNumber)
 
 var LocalResultList = [];
@@ -38,6 +38,8 @@ function hideAll(){
 	document.getElementById('Login').style.visibility = 'hidden';
 	document.getElementById('GMFunScreen').style.visibility = 'hidden';
 	document.getElementById('Notes').style.visibility = 'hidden';
+	document.getElementById('Comments').style.visibility = 'hidden';
+	document.getElementById('Developer').style.visibility = 'hidden';
 	
 	
 }
@@ -54,6 +56,7 @@ function Login(){
 		showScreen('CharacterSheet');
 		document.getElementById('CharacterSheetButton').style.visibility = 'visible';
 		document.getElementById('NotesScreenButton').style.visibility = 'visible';
+		document.getElementById('CommentsScreenButton').style.visibility = 'visible';
 		submitChar();
 	}
 	else{
@@ -71,9 +74,25 @@ function flashWhite(){
 	document.getElementById('GMInitNamePrivate').style.backgroundColor = "white";
 }
 
+function submitComment(){
+	if(document.getElementById('rcvComments').innerHTML != ""){
+		socket.emit('Comment', document.getElementById("inputComment").value, MyCharacter.PName);
+		document.getElementById('rcvComments').innerHTML = "";
+	}
 
-		
-		
+}
+
+function getComments(){
+	socket.emit('GetComments');
+}
+
+function clearComments(){
+	socket.emit('ClearComments');
+
+}		
+socket.on('rcvComments', function(msg){
+	document.getElementById('rcvComments').innerHTML = JSON.stringify(msg);
+});		
 
 
 	
@@ -129,6 +148,7 @@ function test2(){
 		<li>Most places that require numbers, don't check if they recieve letters.  This causes glitches in some areas, but ill fix those later.  Just keep your letters and numbers where they belong</li>
 		</ul>
 	<hr>
+	
 	Version 3.0 Update<br>
 		<ul>
 			<li>Added Player List</li>
@@ -141,12 +161,18 @@ function test2(){
 					<li>-Init List Controls</li>
 				</ul>
 			</li>
-			<li>replace [2] type dice with better images
+			<li>3.01 - 3.05 - Fixed formatting errors</li>
+			<li>3.05 - Added Comment Section
 		</ul>
 		<hr>
 	Possible Future Uprgrade Ideas<br>
 	(Let me know if any of these are high interest to anyone)<br>
 	<ul>
+		<li>Update Save/Load
+			<ul>Either Saving to some kind of file or possibly saving as a browser cookie</ul>
+		</li>
+			
+		<li>Send Private Messages(not just rolls)</li>
 		<li>Finish GM Inspiration system</li>
 		<li>GM Seeing Character Stats</li>
 			<ul><li>Passive Perception/Insight</li>
@@ -159,6 +185,7 @@ function test2(){
 		<li>Spell System (spellbook tab basically)</li>
 		<li>Personal Macros</li>
 		<li>Some kind of Inventory</li>
+		<li>replace [2] type dice with better images</li>
 	</ul>
 	<hr>
 
@@ -171,6 +198,8 @@ function test2(){
   <p><button id="GMScreenButton" onclick="showScreen('GMScreen')" style="visibility:hidden">GM</button></p>
   <p><button id="GMFunScreenButton" onclick="showScreen('GMFunScreen')" style="visibility:hidden">GM Fun</button></p>
   <p><button id="NotesScreenButton" onclick="showScreen('Notes')" style="visibility:hidden">Version Notes</button></p>
+  <p><button id="CommentsScreenButton" onclick="showScreen('Comments')" style="visibility:hidden">Report Issue</button></p>
+  <p><button id="DeveloperScreenButton" onclick="showScreen('Developer')" style="visibility:hidden">Developer</button></p>
   
   <button id="testbutton2" onclick="test()" style="visibility:hidden">test</button><br>
   <button id="testbutton4" onclick="test2()" style="visibility:hidden">test2</button><br>
@@ -182,12 +211,14 @@ function test2(){
 	Character Name: <input type="text" id="CharacterName" size="5"><br>
 	<button id="Login" onclick="Login()">Create</button>
 	<hr>
-	<br>
-	Dungeon Master<br>
-	Name: <input type="text" id="GMName" size="5">
-	<br>
-	<button id="ClaimGMButton" onclick="claimGMStatus()">Claim Dungeon Master Status</button>	
+	<p id="GMLogin">
+		Dungeon Master<br>
+		Name: <input type="text" id="GMName" size="5">
+		<button id="ClaimGMButton" onclick="claimGMStatus()">Claim Dungeon Master Status</button>	
+	</p>
+	
 	<hr><br><br><br><br>
+
 	Caution: The Import Feature is currently in beta.
 	<br>Please be careful of your copy/pasting 
 	<button id="loadCharacter" onclick="loadCharacter()">Import Character</button><input type="text" id="loadCharacterInput" size="5"><hr>
@@ -278,7 +309,7 @@ function test2(){
 		<hr>
 	</div>
 
-	<div id="SavingThrowsButtonsMain" style="height:100%; width:150px; background-color#BEC6DD; position:absolute; top:215px; left:0px; overflow:auto;">
+	<div id="SavingThrowsButtonsMain" style="height:100%; width:150px; background-color#BEC6DD; position:absolute; top:230px; left:0px; overflow:auto;">
 		<button id="STRRoll" onclick="rollSkill(MyCharacter.STRP(), 'Strength')">Strength</button><br>
 		<button id="DEXRoll" onclick="rollSkill(MyCharacter.DEXP(), 'Dexterity')">Dexterity</button><br>
 		<button id="CONRoll" onclick="rollSkill(MyCharacter.CONP(), 'Constitution')">Constitution</button><br>
@@ -287,7 +318,7 @@ function test2(){
 		<button id="CHARoll" onclick="rollSkill(MyCharacter.CHAP(), 'Charisma')">Charisma</button><br>
 	</div>
 
-	<div id="SkillButtonsMain" style="height:100%; width:150px; background-color:#BEC6DD; position: absolute; top:215px; left:150px; overflow: auto;">
+	<div id="SkillButtonsMain" style="height:100%; width:150px; background-color:#BEC6DD; position: absolute; top:230px; left:150px; overflow: auto;">
 		<button id="rollAcrobatics" onclick="rollSkill(MyCharacter.Acrobatics(), 'Acrobatics')">Acrobatics</button><br>
 		<button id="rollAnimalHandling" onclick="rollSkill(MyCharacter.AnimalHandling(), 'Animal Handling')">AnimalHandling</button><br>
 		<button id="rollArcana" onclick="rollSkill(MyCharacter.Arcana(), 'Arcana')">Arcana</button><br>
@@ -359,7 +390,8 @@ function test2(){
 
 <div id="CharacterStatsMenu" style="height:100%; width:300px; position:absolute; top:0px; left:75px; background-color:#BEC6DD; visibility:hidden;">
 	<p id="CharacterStats"></p>
-	<input type="text" id="SaveString" size="20"><button id="saveCharacter" onclick="saveCharacter()">Save</button><br>
+	To save character click the button, then copy and save the created text.  Paste into the import box at the login screen.
+	<button id="saveCharacter" onclick="saveCharacter()">Create Save</button><input type="text" id="SaveString" size="20"><br>
 	<button id="resetStats" onclick="resetStats()">Reset Stats</button>
 </div>
 
@@ -393,4 +425,19 @@ function test2(){
 		<p id="initList"></p>
 	</div>
 </div>
+
+<div id="Comments" style="height:100%; width:300px; position:absolute; top:0px; left:75px; background-color:#BEC6DD; visibility:hidden;">
+	<textarea id="inputComment" rows="10" cols="35"></textarea>
+	<button id="submitCommentButton" onclick="submitComment()" >Submit</button>
+</div>
+
+
+
+<div id="Developer" style="height:100%; width:300px; position:absolute; top:0px; left:75px; background-color:#BEC6DD; visibility:hidden;">
+<textarea id="rcvComments" rows="10" cols"35"></textarea>
+<br>
+	<button id="getCommentsButton" onclick="getComments()">Get</button><button id="clearCommentsButton" onclick="clearComments()">Clear</button>
+
+</div>
+
 </body></html>

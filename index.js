@@ -6,7 +6,7 @@ var io = require('socket.io').listen(server);
 server.listen(process.env.PORT || 3000);
 
 console.log("listening");
-
+var Comments = [];
 var PlayerList = [];
 var InitList = [];
 var GMData = {
@@ -81,8 +81,8 @@ io.on('connection', function(socket){
 	});
 	
 	socket.on('Test', function(){
-		console.log("");
-		console.log('Testing...');
+		//console.log("");
+		//console.log('Testing...');
 	});
 	
 	socket.on('SendPvtMsg', function(msg){
@@ -90,9 +90,22 @@ io.on('connection', function(socket){
 	});
 	
 	
+	socket.on('Comment', function(iMsg, iPname){
+		var input = {
+			msg: iMsg,
+			PName: iPname
+		};
 	
+		Comments.push(input);
+	});
 	
-	
+	socket.on('GetComments', function(){
+		io.to(socket.id).emit('rcvComments', Comments);
+		
+	});
+	socket.on('ClearComments', function(){
+		Comments = [];
+	});
 	
 	socket.on('InitRoll', function(input){
 		InitList.push(input);
