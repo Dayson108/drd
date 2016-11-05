@@ -8,6 +8,7 @@
 <script src="CharacterCommands.js"></script>
 <script src="GMCommands.js"></script>
 <script src="InitFunctions.js"></script>
+<script src="DevFunctions.js"></script>
 <script>
 var versionNumber = 3.04;
 console.log("API Ready v" + versionNumber)
@@ -43,8 +44,16 @@ function hideAll(){
 	
 	
 }
+function GMShowScreen(screen){
+	document.getElementById('ResultListButtons').style.visibility = 'hidden';
+	document.getElementById('ResultListMain').style.visibility = 'hidden';
+	document.getElementById(screen).style.visibility = 'visible';
+}
+
 function showScreen(screen){
 	hideAll();
+	document.getElementById('ResultListButtons').style.visibility = 'visible';
+	document.getElementById('ResultListMain').style.visibility = 'visible';
 	document.getElementById(screen).style.visibility = 'visible';
 }
 
@@ -73,27 +82,6 @@ function flashWhite(){
 	document.getElementById('GMName').style.backgroundColor = "white";
 	document.getElementById('GMInitNamePrivate').style.backgroundColor = "white";
 }
-
-function submitComment(){
-	if(document.getElementById('rcvComments').innerHTML != ""){
-		socket.emit('Comment', document.getElementById("inputComment").value, MyCharacter.PName);
-		document.getElementById('rcvComments').innerHTML = "";
-	}
-
-}
-
-function getComments(){
-	socket.emit('GetComments');
-}
-
-function clearComments(){
-	socket.emit('ClearComments');
-
-}		
-socket.on('rcvComments', function(msg){
-	document.getElementById('rcvComments').innerHTML = JSON.stringify(msg);
-});		
-
 
 	
 
@@ -196,7 +184,7 @@ function test2(){
   <p><button id="CharacterSheetButton" onclick="showScreen('CharacterSheet')" style="visibility:hidden">Character Sheet</button></p>
   <p><button id="CharacterStatsButton" onclick="showScreen('CharacterStatsMenu')" style="visibility:hidden">Stats</button></p>
   <p><button id="GMScreenButton" onclick="showScreen('GMScreen')" style="visibility:hidden">GM</button></p>
-  <p><button id="GMFunScreenButton" onclick="showScreen('GMFunScreen')" style="visibility:hidden">GM Fun</button></p>
+  <p><button id="GMFunScreenButton" onclick="showScreen('GMFunScreen')" style="visibility:hidden">GM Functions</button></p>
   <p><button id="NotesScreenButton" onclick="showScreen('Notes')" style="visibility:hidden">Version Notes</button></p>
   <p><button id="CommentsScreenButton" onclick="showScreen('Comments')" style="visibility:hidden">Report Issue</button></p>
   <p><button id="DeveloperScreenButton" onclick="showScreen('Developer')" style="visibility:hidden">Developer</button></p>
@@ -229,9 +217,8 @@ function test2(){
 <div id="GMScreen" style="height:100%; width:300px; position:absolute; top:0px; left:75px; background-color:#BEC6DD; visibility:hidden;">
 	
 	<div id="GMFunScreen" style="height:100%; width:300px; position:absolute; top:0px; left:0px; background-color:#FBE272; visibility:hidden">
-	
-	Empty Space for Future GM function expansion
-	
+	<button id="GMShowInspiration" onclick="GMShowScreen('Inspiration')">Inspiration</button>
+		
 	</div>
 	<div id="GMCharName" style="height:40px; width:300px; position:absolute; top:0px; left:0px; background-color:#BEC6DD;">
 		<input type="text" id="GMRollName" size="10" value="Dungeon Master"> Character Name
@@ -291,7 +278,7 @@ function test2(){
 		<hr>
 	</div>
 	<div id="DiceMod" style="height:40px; width:300px; background-color#BEC6DD; position:absolute; top:40px; left:0px;">
-		<input type="text" id="rollMod" size="1">+/- Roll Mod&nbsp&nbsp&nbsp&nbsp<img src="inspired.png" style="height:20px; visibility:hidden;"><input type="checkbox" id="InspiredCheck" style="visibility:hidden"><hr>
+		<input type="text" id="rollMod" size="1">+/- Roll Mod&nbsp&nbsp&nbsp&nbsp<img src="Images/inspired.png" style="height:20px; "><input type="checkbox" id="InspiredCheck" style="visibility:hidden"><hr>
 	</div>
 	<div id="DiceMain" style="height:135px; width:300px; background-color#BEC6DD; position:absolute; top:85px; left:0px;">
 		1d20 + <input type="text" id="d20P" size="1">
@@ -338,7 +325,6 @@ function test2(){
 		<button id="rollStealth" onclick="rollSkill(MyCharacter.Stealth(), 'Stealth')">Stealth</button><br>
 		<button id="rollSurvival" onclick="rollSkill(MyCharacter.Survival(), 'Survival')">Survival</button><br>
 	</div>
-	</div>
 </div>
 
 
@@ -347,7 +333,9 @@ function test2(){
 
 
 
-
+<div id="GMPlayerList" style="height:100%; width:400px; background-color:#AAAAAA; padding:5px; position:absolute; top:0px; left:380px;">
+ooga
+</div>
 
 
 <div id="CharacterSheet" style="height:100%; width:300px; position:absolute; top:0px; left:75px; background-color:#BEC6DD; visibility:hidden;">
@@ -397,6 +385,7 @@ function test2(){
 
 <div id="Line1" style="height:100%; width:5px; background-color:#000000; position:absolute; top:0px; left:375px;">
 </div>
+
 
 <div id="ResultListButtons" style="height:60px; width:400px; background-color:#BEC6DD;padding:5px; position:absolute; top:0px; left:380px;">
 		<button id="clearChatButton" onclick="clearChat()">Clear Chat</button><input type="checkbox" id="PrivateRoll">Private(self)
