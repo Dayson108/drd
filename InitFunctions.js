@@ -154,7 +154,7 @@ function rollInit(){
 	
 	
 	socket.emit('InitRoll', initRoll);
-	//document.getElementById("initbutton").disabled = true;
+	document.getElementById("initbutton").disabled = true;
 
 }
 
