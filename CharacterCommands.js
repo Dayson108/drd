@@ -320,11 +320,7 @@ function loadCharacter(){
 	
 	
 	MyCharacterInput = JSON.parse(document.getElementById('loadCharacterInput').value);
-
-	
-	
-		//MyCharacter.CName = MyCharacterInput.CName;
-		MyCharacter.CName = "steve";
+		MyCharacter.CName = MyCharacterInput.CName;
 		MyCharacter.PName = MyCharacterInput.PName;
 		MyCharacter.CharacterLevel = MyCharacterInput.CharacterLevel;
 		MyCharacter.ProfBonus = MyCharacterInput.ProfBonus;
