@@ -1,6 +1,6 @@
 <html>
   <head>
-<title>D&D 5e App</title>
+<title>D&D 5e App v3.06</title>
 <script src="/socket.io/socket.io.js"></script>
 <script src="CreatedSockets.js"></script>
 <script src="dicerolls.js"></script>
@@ -10,7 +10,7 @@
 <script src="InitFunctions.js"></script>
 <script src="DevFunctions.js"></script>
 <script>
-var versionNumber = 3.04;
+var versionNumber = 3.06;
 console.log("API Ready v" + versionNumber)
 
 var LocalResultList = [];
@@ -127,9 +127,7 @@ function test2(){
 <div id="Notes" style="height:100%; width:300px; position:absolute; top:0px; left:75px; background-color:#BEC6DD; visibility:hidden;">
 	D&D App 5e App<br>
 	V. 3.01<br>
-	<br>
-	Future Updates will have notes here as well as known bugs.<br>
-	<br><hr>
+	<hr>
 	KNOWN BUGS:<br>
 		<ul>
 		<li>If two players have the same Player and Character Name private message doesn't work correctly</li>
@@ -137,22 +135,21 @@ function test2(){
 		</ul>
 	<hr>
 	
-	Version 3.0 Update<br>
-		<ul>
-			<li>Added Player List</li>
-			<li>Added Private Chat</li>
-			<li>Added Init List</li>
-			<li>Macros now show their + bonuses</li>
-			<li>Added Save/Load Character</li>
-			<li>Added GM Feature
-				<ul>
-					<li>-Init List Controls</li>
-				</ul>
-			</li>
-			<li>3.01 - 3.05 - Fixed formatting errors</li>
-			<li>3.05 - Added Comment Section
-		</ul>
-		<hr>
+	Version 3.0 Update Major Notes<br>
+	<ul>
+		<li>Added Player List</li>
+		<li>Added Private Chat</li>
+		<li>Added Init List</li>
+		<li>Macros now show their + bonuses</li>
+		<li>Added Save/Load Character</li>
+		<li>Added GM as roll</li>
+		<li>Added GM Feature
+			<ul>
+				<li>-Init List Controls</li>
+			</ul>
+		</li>
+	</ul>
+	<hr>
 	Possible Future Uprgrade Ideas<br>
 	(Let me know if any of these are high interest to anyone)<br>
 	<ul>
@@ -176,7 +173,18 @@ function test2(){
 		<li>replace [2] type dice with better images</li>
 	</ul>
 	<hr>
-
+	Patch Notes<br>
+	<ul>
+		<li>3.01 - 3.05 - Fixed formatting errors</li>
+		<li>3.05 - Added Comment Section</li>
+		<li>3.06
+			<ul>
+				<li>fixed errors with wrong stat modifiers in macros(religion and survival)</li>
+				<li>when reseting stats, primary stats always reverted to the 'default'<li>
+				<li>Report/Comments now correctly showing after importing</li>
+			</ul>
+		</li>
+	</ul>
 </div>
 
 <nav id="nav" style="background-color:#00004d; position:absolute; left:0px; top:0px; height:100%; width:75px; float:left;">
@@ -346,12 +354,12 @@ ooga
 	<input type="text" id="MyLevel" value="5" style="width: 30px">Character Level<br>	
 	<hr>
 	Input your character's core stats (not the +bonus)<br>
-	<input type="text" id="MySTR" value="20" style="width: 30px"><input type="checkbox" id="STRProfCheck">STR<br>
-	<input type="text" id="MyDEX" value="18" style="width: 30px"><input type="checkbox" id="DEXProfCheck">DEX<br>
-	<input type="text" id="MyCON" value="16" style="width: 30px"><input type="checkbox" id="CONProfCheck">CON<br>
-	<input type="text" id="MyINT" value="14" style="width: 30px"><input type="checkbox" id="INTProfCheck">INT<br>
-	<input type="text" id="MyWIS" value="12" style="width: 30px"><input type="checkbox" id="WISProfCheck">WIS<br>
-	<input type="text" id="MyCHA" value="10" style="width: 30px"><input type="checkbox" id="CHAProfCheck">CHA
+	<input type="text" id="MySTR" style="width: 30px"><input type="checkbox" id="STRProfCheck">STR<br>
+	<input type="text" id="MyDEX" style="width: 30px"><input type="checkbox" id="DEXProfCheck">DEX<br>
+	<input type="text" id="MyCON" style="width: 30px"><input type="checkbox" id="CONProfCheck">CON<br>
+	<input type="text" id="MyINT" style="width: 30px"><input type="checkbox" id="INTProfCheck">INT<br>
+	<input type="text" id="MyWIS" style="width: 30px"><input type="checkbox" id="WISProfCheck">WIS<br>
+	<input type="text" id="MyCHA" style="width: 30px"><input type="checkbox" id="CHAProfCheck">CHA
 	<hr>
 	<input type="checkbox" id="AcrobaticsProfCheck">Acrobatics<br>
 	<input type="checkbox" id="AnimalHandlingProfCheck">Animal Handling<br>

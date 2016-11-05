@@ -120,7 +120,7 @@ var MyCharacter = {
 		},
 		Religion: function(){
 			if(this.profSleightOfHand){
-				return (this.ProfBonus + this.DEXP());
+				return (this.ProfBonus + this.INTP());
 			}
 			return(this.DEXP());
 		},
@@ -138,7 +138,7 @@ var MyCharacter = {
 		},
 		Survival: function(){
 			if(this.profSurvival){
-				return (this.ProfBonus + this.DEXP());
+				return (this.ProfBonus + this.WISP());
 			}
 			return(this.DEXP());
 		},
@@ -369,9 +369,18 @@ function loadCharacter(){
 	};
 	socket.emit('playerSubmitted', msg);
 	skillButtonNameChange();
+	document.getElementById('NotesScreenButton').style.visibility = 'visible';
+	document.getElementById('CommentsScreenButton').style.visibility = 'visible';
 	showScreen('Main');
 }
 function recheckBoxes(){
+	document.getElementById("MySTR").value = MyCharacter.STR;
+	document.getElementById("MyDEX").value = MyCharacter.DEX;
+	document.getElementById("MyCON").value = MyCharacter.CON;
+	document.getElementById("MyINT").value = MyCharacter.INT;
+	document.getElementById("MyWIS").value = MyCharacter.WIS;
+	document.getElementById("MyCHA").value = MyCharacter.CHA;
+		
 	if(MyCharacter.profSTR){document.getElementById("STRProfCheck").checked = true}
 	if(MyCharacter.profDEX){document.getElementById("DEXProfCheck").checked = true}
 	if(MyCharacter.profCON){document.getElementById("CONProfCheck").checked = true}
