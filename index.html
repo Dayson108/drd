@@ -1,6 +1,6 @@
 <html>
   <head>
-<title>D&D 5e App v3.06</title>
+<title>D&D 5e App v3.07</title>
 <script src="/socket.io/socket.io.js"></script>
 <script src="CreatedSockets.js"></script>
 <script src="dicerolls.js"></script>
@@ -10,7 +10,7 @@
 <script src="InitFunctions.js"></script>
 <script src="DevFunctions.js"></script>
 <script>
-var versionNumber = 3.06;
+var versionNumber = 3.07;
 console.log("API Ready v" + versionNumber)
 
 var LocalResultList = [];
@@ -110,7 +110,7 @@ function flashWhite(){
 function test(){
 	//socket.emit('Test');
 
-
+console.log(MyCharacter.Deception());
 
 
 
@@ -197,7 +197,7 @@ function test2(){
   <p><button id="CommentsScreenButton" onclick="showScreen('Comments')" style="visibility:hidden">Report Issue</button></p>
   <p><button id="DeveloperScreenButton" onclick="showScreen('Developer')" style="visibility:hidden">Developer</button></p>
   
-  <button id="testbutton2" onclick="test()" style="visibility:hidden">test</button><br>
+  <button id="testbutton2" onclick="test()">test</button><br>
   <button id="testbutton4" onclick="test2()" style="visibility:hidden">test2</button><br>
 </nav>
 

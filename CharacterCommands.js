@@ -60,9 +60,11 @@ var MyCharacter = {
 		},
 		Deception: function(){
 			if(this.profDeception){
+				console.log('test');
+				console.log(this.CHAP());
 				return (this.ProfBonus + this.CHAP());
 			}
-			return(this.DEXP());
+			return(this.CHAP());
 		},
 		History: function(){
 			if(this.profHistory){
@@ -122,7 +124,7 @@ var MyCharacter = {
 			if(this.profSleightOfHand){
 				return (this.ProfBonus + this.INTP());
 			}
-			return(this.DEXP());
+			return(this.INTP());
 		},
 		SleightOfHand: function(){
 			if(this.profSleightOfHand){
@@ -140,7 +142,7 @@ var MyCharacter = {
 			if(this.profSurvival){
 				return (this.ProfBonus + this.WISP());
 			}
-			return(this.DEXP());
+			return(this.WISP());
 		},
 		STRP: function(){
 			if(this.profSTR){
