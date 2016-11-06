@@ -95,7 +95,7 @@ io.on('connection', function(socket){
 			msg: iMsg,
 			PName: iPname
 		};
-	
+		console.log(input);
 		Comments.push(input);
 	});
 	

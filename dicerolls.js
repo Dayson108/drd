@@ -44,6 +44,16 @@ function rollSkill(Plus, skillName){
 	rolld20Dice(Number(Plus), adv, skillName);
 }
 
+function rollStat(Plus, skillName, statProf){
+	var adv = mainAdvCheck();
+	if(statProf){
+		Plus = Plus + MyCharacter.ProfBonus;
+		
+	}
+	Plus = Plus + Number(document.getElementById('rollMod').value);
+	document.getElementById('rollMod').value = "";
+	rolld20Dice(Number(Plus), adv, skillName);
+}
 
 function rollADd20Orig(){
 	var adv;

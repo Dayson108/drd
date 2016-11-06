@@ -290,7 +290,7 @@ function test2(){
 	</div>
 	<div id="DiceMain" style="height:135px; width:300px; background-color#BEC6DD; position:absolute; top:85px; left:0px;">
 		1d20 + <input type="text" id="d20P" size="1">
-		<button id="rolld20" onclick="rollSkill(document.getElementById('d20P').value, 'd20')">Roll</button><br>
+		<button id="rolld20" onclick="rollSkill(Number(document.getElementById('d20P').value), 'd20')">Roll</button><br>
 		<input type="text" id="d12" size="1">d12 + <input type="text" id="d12P" size="1">
 		<button id="rolld12" onclick="rollSidedDice(12, Number(document.getElementById('d12P').value), document.getElementById('d12').value, 'd12')">Roll</button><br>
 		<input type="text" id="d10" size="1">d10 + <input type="text" id="d10P" size="1">
@@ -305,12 +305,12 @@ function test2(){
 	</div>
 
 	<div id="SavingThrowsButtonsMain" style="height:100%; width:150px; background-color#BEC6DD; position:absolute; top:230px; left:0px; overflow:auto;">
-		<button id="STRRoll" onclick="rollSkill(MyCharacter.STRP(), 'Strength')">Strength</button><br>
-		<button id="DEXRoll" onclick="rollSkill(MyCharacter.DEXP(), 'Dexterity')">Dexterity</button><br>
-		<button id="CONRoll" onclick="rollSkill(MyCharacter.CONP(), 'Constitution')">Constitution</button><br>
-		<button id="INTRoll" onclick="rollSkill(MyCharacter.INTP(), 'Intelligence')">Intelligence</button><br>
-		<button id="WISRoll" onclick="rollSkill(MyCharacter.WISP(), 'Wisdom')">Wisdom</button><br>
-		<button id="CHARoll" onclick="rollSkill(MyCharacter.CHAP(), 'Charisma')">Charisma</button><br>
+		<button id="STRRoll" onclick="rollStat(MyCharacter.STRP(), 'Strength', MyCharacter.profSTR)">Strength</button><br>
+		<button id="DEXRoll" onclick="rollStat(MyCharacter.DEXP(), 'Dexterity')">Dexterity</button><br>
+		<button id="CONRoll" onclick="rollStat(MyCharacter.CONP(), 'Constitution')">Constitution</button><br>
+		<button id="INTRoll" onclick="rollStat(MyCharacter.INTP(), 'Intelligence')">Intelligence</button><br>
+		<button id="WISRoll" onclick="rollStat(MyCharacter.WISP(), 'Wisdom')">Wisdom</button><br>
+		<button id="CHARoll" onclick="rollStat(MyCharacter.CHAP(), 'Charisma')">Charisma</button><br>
 	</div>
 
 	<div id="SkillButtonsMain" style="height:100%; width:150px; background-color:#BEC6DD; position: absolute; top:230px; left:150px; overflow: auto;">

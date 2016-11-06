@@ -1,8 +1,11 @@
 
 function submitComment(){
-	if(document.getElementById('rcvComments').innerHTML != ""){
+
+	if(document.getElementById('inputComment').value != ""){
+		console.log('woof');
 		socket.emit('Comment', document.getElementById("inputComment").value, MyCharacter.PName);
-		document.getElementById('rcvComments').innerHTML = "";
+		document.getElementById('inputComment').value = "";
+		
 	}
 
 }

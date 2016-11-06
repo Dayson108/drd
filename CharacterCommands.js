@@ -145,39 +145,21 @@ var MyCharacter = {
 			return(this.WISP());
 		},
 		STRP: function(){
-			if(this.profSTR){
-				return (this.ProfBonus + calcStatBonus(this.STR));
-			}
 			return(calcStatBonus(this.STR));
 		},
 		DEXP: function(){
-			if(this.profDEX){
-				return (this.ProfBonus + calcStatBonus(this.DEX));
-			}
 			return(calcStatBonus(this.DEX));
 		},
 		CONP: function(){
-			if(this.profCON){
-				return (this.ProfBonus + calcStatBonus(this.CON));
-			}
 			return(calcStatBonus(this.CON));
 		},
 		INTP: function(){
-			if(this.profINT){
-				return (this.ProfBonus + calcStatBonus(this.INT));
-			}
 			return(calcStatBonus(this.INT));
 		},
 		WISP: function(){
-			if(this.profWIS){
-				return (this.ProfBonus + calcStatBonus(this.WIS));
-			}
 			return(calcStatBonus(this.WIS));
 		},
 		CHAP: function(){
-			if(this.profCHA){
-				return (this.ProfBonus + calcStatBonus(this.CHA));
-			}
 			return(calcStatBonus(this.CHA));
 		}
 };
@@ -245,12 +227,36 @@ function plusMinusString(number){
 }
 
 function skillButtonNameChange(){
-	document.getElementById('STRRoll').innerHTML = 'STR(' + plusMinusString(MyCharacter.STRP()) + ')';
-	document.getElementById('DEXRoll').innerHTML = 'DEX(' + plusMinusString(MyCharacter.DEXP()) + ')';
-	document.getElementById('CONRoll').innerHTML = 'CON(' + plusMinusString(MyCharacter.CONP()) + ')';
-	document.getElementById('INTRoll').innerHTML = 'INT(' + plusMinusString(MyCharacter.INTP()) + ')';
-	document.getElementById('WISRoll').innerHTML = 'WIS(' + plusMinusString(MyCharacter.WISP()) + ')';
-	document.getElementById('CHARoll').innerHTML = 'CHA(' + plusMinusString(MyCharacter.CHAP()) + ')';
+	var strP = 0;
+	var dexP = 0;
+	var conP = 0;
+	var intP = 0;
+	var wisP = 0;
+	var chaP = 0;
+	if(MyCharacter.profSTR){
+		strP = MyCharacter.ProfBonus;
+	}
+	if(MyCharacter.profDEX){
+		dexP = MyCharacter.ProfBonus;
+	}
+	if(MyCharacter.profCON){
+		conP = MyCharacter.ProfBonus;
+	}
+	if(MyCharacter.profINT){
+		intP = MyCharacter.ProfBonus;
+	}
+	if(MyCharacter.profWIS){
+		wisP = MyCharacter.ProfBonus;
+	}
+	if(MyCharacter.profCHA){
+		chaP = MyCharacter.ProfBonus;
+	}
+	document.getElementById('STRRoll').innerHTML = 'STR(' + plusMinusString(strP + MyCharacter.STRP()) + ')';
+	document.getElementById('DEXRoll').innerHTML = 'DEX(' + plusMinusString(dexP + MyCharacter.DEXP()) + ')';
+	document.getElementById('CONRoll').innerHTML = 'CON(' + plusMinusString(conP + MyCharacter.CONP()) + ')';
+	document.getElementById('INTRoll').innerHTML = 'INT(' + plusMinusString(intP + MyCharacter.INTP()) + ')';
+	document.getElementById('WISRoll').innerHTML = 'WIS(' + plusMinusString(wisP + MyCharacter.WISP()) + ')';
+	document.getElementById('CHARoll').innerHTML = 'CHA(' + plusMinusString(chaP + MyCharacter.CHAP()) + ')';
 	
 	document.getElementById('rollAcrobatics').innerHTML = 'Acrobatics(' + plusMinusString(MyCharacter.Acrobatics()) + ')';
 	document.getElementById('rollAnimalHandling').innerHTML = 'Animal Handling(' + plusMinusString(MyCharacter.AnimalHandling()) + ')';
