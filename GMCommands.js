@@ -33,7 +33,6 @@ function rollGMDice(sides, plus, diceNum){
 		rolld20Dice(plus, adv, skillNameTemp)
 	
 	}else{
-		var diceNum =
 		skillNameTemp = 'd' + sides;
 		rollSidedDice(sides, plus, diceNum, skillNameTemp);	
 	}

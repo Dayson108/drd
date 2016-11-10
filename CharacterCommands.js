@@ -379,6 +379,7 @@ function loadCharacter(){
 	skillButtonNameChange();
 	document.getElementById('NotesScreenButton').style.visibility = 'visible';
 	document.getElementById('CommentsScreenButton').style.visibility = 'visible';
+	document.getElementById('initbutton').style.visibility = 'visible';
 	showScreen('Main');
 }
 function recheckBoxes(){

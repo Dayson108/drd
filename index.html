@@ -1,6 +1,6 @@
 <html>
   <head>
-<title>D&D 5e App v3.07</title>
+<title>D&D 5e App v3.08</title>
 <script src="/socket.io/socket.io.js"></script>
 <script src="CreatedSockets.js"></script>
 <script src="dicerolls.js"></script>
@@ -10,7 +10,7 @@
 <script src="InitFunctions.js"></script>
 <script src="DevFunctions.js"></script>
 <script>
-var versionNumber = 3.07;
+var versionNumber = 3.08;
 console.log("API Ready v" + versionNumber)
 
 var LocalResultList = [];
@@ -130,8 +130,13 @@ function test2(){
 	<hr>
 	KNOWN BUGS:<br>
 		<ul>
-		<li>If two players have the same Player and Character Name private message doesn't work correctly</li>
-		<li>Most places that require numbers, don't check if they recieve letters.  This causes glitches in some areas, but ill fix those later.  Just keep your letters and numbers where they belong</li>
+			<li>If two players have the same Player and Character Name private message doesn't work correctly</li>
+			<li>Most places that require numbers, don't check if they recieve letters.  This causes glitches in some areas, but ill fix those later.  Just keep your letters and numbers where they belong</li>
+			<li>Server will reset after 30 min of iniactivity (Free user limitation, not glitch)
+				<ul>
+					<li>(In Progress) moving server storage to cookies/permanant storage</li>
+				</ul>
+			</li>
 		</ul>
 	<hr>
 	
@@ -184,6 +189,13 @@ function test2(){
 				<li>Report/Comments now correctly showing after importing</li>
 			</ul>
 		</li>
+		<li>3.07
+			<ul>
+				<li>Init Button Mission on Import Fixed</li>
+				<li>Restored Error Reporting, however still limited by server reset
+				<li>DM Can now correctly roll multiple dice</li>
+			</ul>
+		</li>
 	</ul>
 </div>
 
@@ -197,7 +209,7 @@ function test2(){
   <p><button id="CommentsScreenButton" onclick="showScreen('Comments')" style="visibility:hidden">Report Issue</button></p>
   <p><button id="DeveloperScreenButton" onclick="showScreen('Developer')" style="visibility:hidden">Developer</button></p>
   
-  <button id="testbutton2" onclick="test()">test</button><br>
+  <button id="testbutton2" onclick="test()" style="visibility:hidden">test</button><br>
   <button id="testbutton4" onclick="test2()" style="visibility:hidden">test2</button><br>
 </nav>
 
@@ -306,11 +318,11 @@ function test2(){
 
 	<div id="SavingThrowsButtonsMain" style="height:100%; width:150px; background-color#BEC6DD; position:absolute; top:230px; left:0px; overflow:auto;">
 		<button id="STRRoll" onclick="rollStat(MyCharacter.STRP(), 'Strength', MyCharacter.profSTR)">Strength</button><br>
-		<button id="DEXRoll" onclick="rollStat(MyCharacter.DEXP(), 'Dexterity')">Dexterity</button><br>
-		<button id="CONRoll" onclick="rollStat(MyCharacter.CONP(), 'Constitution')">Constitution</button><br>
-		<button id="INTRoll" onclick="rollStat(MyCharacter.INTP(), 'Intelligence')">Intelligence</button><br>
-		<button id="WISRoll" onclick="rollStat(MyCharacter.WISP(), 'Wisdom')">Wisdom</button><br>
-		<button id="CHARoll" onclick="rollStat(MyCharacter.CHAP(), 'Charisma')">Charisma</button><br>
+		<button id="DEXRoll" onclick="rollStat(MyCharacter.DEXP(), 'Dexterity', MyCharacter.profDEX)">Dexterity</button><br>
+		<button id="CONRoll" onclick="rollStat(MyCharacter.CONP(), 'Constitution', MyCharacter.profCON)">Constitution</button><br>
+		<button id="INTRoll" onclick="rollStat(MyCharacter.INTP(), 'Intelligence', MyCharacter.profINT)">Intelligence</button><br>
+		<button id="WISRoll" onclick="rollStat(MyCharacter.WISP(), 'Wisdom'), MyCharacter.profWIS">Wisdom</button><br>
+		<button id="CHARoll" onclick="rollStat(MyCharacter.CHAP(), 'Charisma'), MyCharacter.profCHA">Charisma</button><br>
 	</div>
 
 	<div id="SkillButtonsMain" style="height:100%; width:150px; background-color:#BEC6DD; position: absolute; top:230px; left:150px; overflow: auto;">
