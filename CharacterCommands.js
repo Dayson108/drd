@@ -1,9 +1,16 @@
 var MyCharacter = {
 		CName: '',
 		PName: '',
+		Class: '',
 		playerID: '',
 		CharacterLevel: 0,
 		ProfBonus: 0,
+		BaseAC: 0,
+		ACMod: 0,
+		HPMax: 0,
+		HPCurrent: 0,
+		TempHPMax: 0,
+		TempHPCurrent: 0,
 		STR: 0,
     	DEX: 0,
     	CON: 0,
@@ -60,8 +67,6 @@ var MyCharacter = {
 		},
 		Deception: function(){
 			if(this.profDeception){
-				console.log('test');
-				console.log(this.CHAP());
 				return (this.ProfBonus + this.CHAP());
 			}
 			return(this.CHAP());
@@ -176,8 +181,16 @@ function resetStats(){
 }
 
 function SubmitCharacterStats(){
+	MyCharacter.CName = document.getElementById('CharacterName').value;
 	MyCharacter.CharacterLevel = Number(document.getElementById('MyLevel').value);
 	MyCharacter.ProfBonus = Math.ceil(1+(MyCharacter.CharacterLevel / 4));
+	MyCharacter.Class = document.getElementById('MyClass').value;
+	MyCharacter.BaseAC = Number(document.getElementById('MyBaseAC').value);
+	MyCharacter.HPMax = Number(document.getElementById('MyHPMax').value);
+	MyCharacter.HPCurrent = MyCharacter.HPMax;
+	MyCharacter.TempHPMax = 0;
+	MyCharacter.TempHPCurrent = 0;
+	MyCharacter.ACMod = 0;
 	MyCharacter.profSTR = document.getElementById("STRProfCheck").checked;
 	MyCharacter.profDEX = document.getElementById("DEXProfCheck").checked;
 	MyCharacter.profCON = document.getElementById("CONProfCheck").checked;
@@ -215,7 +228,10 @@ function SubmitCharacterStats(){
 	document.getElementById('initbutton').style.visibility = 'visible';
 	skillButtonNameChange();
 	UpdateStats();
-	showScreen('Main');
+	updatePlayerStatsMenu();
+	showPlayerScreens();
+	submitChar();
+	socket.emit('AddPlayer', MyCharacter);
 }
 
 function plusMinusString(number){
@@ -330,44 +346,58 @@ function loadCharacter(){
 	}
 	
 	MyCharacterInput = JSON.parse(document.getElementById('loadCharacterInput').value);
-		MyCharacter.CName = MyCharacterInput.CName;
-		MyCharacter.PName = MyCharacterInput.PName;
-		MyCharacter.CharacterLevel = MyCharacterInput.CharacterLevel;
-		MyCharacter.ProfBonus = MyCharacterInput.ProfBonus;
-		MyCharacter.STR = MyCharacterInput.STR;
-    	MyCharacter.DEX = MyCharacterInput.DEX;
-    	MyCharacter.CON = MyCharacterInput.CON;
-		MyCharacter.INT = MyCharacterInput.INT;
-    	MyCharacter.WIS = MyCharacterInput.WIS;
-    	MyCharacter.CHA = MyCharacterInput.CHA;
+	MyCharacter.CName = MyCharacterInput.CName;
+	MyCharacter.PName = MyCharacterInput.PName;
+	MyCharacter.CharacterLevel = MyCharacterInput.CharacterLevel;
+	MyCharacter.ProfBonus = MyCharacterInput.ProfBonus;
 		
-		MyCharacter.profSTR = MyCharacterInput.profSTR;
-		MyCharacter.profDEX = MyCharacterInput.profDEX;
-		MyCharacter.profCON = MyCharacterInput.profCON;
-		MyCharacter.profINT = MyCharacterInput.profINT;
-		MyCharacter.profWIS = MyCharacterInput.profWIS;
-		MyCharacter.profCHA = MyCharacterInput.profCHA;
-		MyCharacter.profAcrobatics = MyCharacterInput.profAcrobatics;
-		MyCharacter.profAnimalHandling = MyCharacterInput.profAnimalHandling;
-		MyCharacter.profArcana = MyCharacterInput.profArcana;
-		MyCharacter.profAthletics = MyCharacterInput.profAthletics;
-		MyCharacter.profDeception = MyCharacterInput.profDeception;
-		MyCharacter.profHistory = MyCharacterInput.profHistory;
-		MyCharacter.profInsight = MyCharacterInput.profInsight;
-		MyCharacter.profIntimidation = MyCharacterInput.profIntimidation;
-		MyCharacter.profInvestigation = MyCharacterInput.profInvestigation;
-		MyCharacter.profMedicine = MyCharacterInput.profMedicine;
-		MyCharacter.profNature = MyCharacterInput.profNature;
-		MyCharacter.profPerception = MyCharacterInput.profPerception;
-		MyCharacter.profPerformance = MyCharacterInput.profPerformance;
-		MyCharacter.profPersuasion = MyCharacterInput.profPersuasion;
-		MyCharacter.profReligion = MyCharacterInput.profReligion;
-		MyCharacter.profSleightOfHand = MyCharacterInput.profSleightOfHand;
-		MyCharacter.profStealth = MyCharacterInput.profStealth;
-		MyCharacter.profSurvival = MyCharacterInput.profSurvival;
+		
+		
+	MyCharacter.Class = MyCharacterInput.Class;
+	MyCharacter.BaseAC = MyCharacterInput.BaseAC
+	MyCharacter.HPMax = MyCharacterInput.HPMax;
+	MyCharacter.HPCurrent = MyCharacterInput.HPMax;
+		
+	MyCharacter.TempHPMax = 0;
+	MyCharacter.TempHPCurrent = 0;
+	MyCharacter.ACMod = 0;
 	
-		recheckBoxes();
-		document.getElementById('MainScreenButton').style.visibility = 'visible';
+	
+	
+	MyCharacter.STR = MyCharacterInput.STR;
+	MyCharacter.DEX = MyCharacterInput.DEX;
+	MyCharacter.CON = MyCharacterInput.CON;
+	MyCharacter.INT = MyCharacterInput.INT;
+	MyCharacter.WIS = MyCharacterInput.WIS;
+	MyCharacter.CHA = MyCharacterInput.CHA;
+	
+	MyCharacter.profSTR = MyCharacterInput.profSTR;
+	MyCharacter.profDEX = MyCharacterInput.profDEX;
+	MyCharacter.profCON = MyCharacterInput.profCON;
+	MyCharacter.profINT = MyCharacterInput.profINT;
+	MyCharacter.profWIS = MyCharacterInput.profWIS;
+	MyCharacter.profCHA = MyCharacterInput.profCHA;
+	MyCharacter.profAcrobatics = MyCharacterInput.profAcrobatics;
+	MyCharacter.profAnimalHandling = MyCharacterInput.profAnimalHandling;
+	MyCharacter.profArcana = MyCharacterInput.profArcana;
+	MyCharacter.profAthletics = MyCharacterInput.profAthletics;
+	MyCharacter.profDeception = MyCharacterInput.profDeception;
+	MyCharacter.profHistory = MyCharacterInput.profHistory;
+	MyCharacter.profInsight = MyCharacterInput.profInsight;
+	MyCharacter.profIntimidation = MyCharacterInput.profIntimidation;
+	MyCharacter.profInvestigation = MyCharacterInput.profInvestigation;
+	MyCharacter.profMedicine = MyCharacterInput.profMedicine;
+	MyCharacter.profNature = MyCharacterInput.profNature;
+	MyCharacter.profPerception = MyCharacterInput.profPerception;
+	MyCharacter.profPerformance = MyCharacterInput.profPerformance;
+	MyCharacter.profPersuasion = MyCharacterInput.profPersuasion;
+	MyCharacter.profReligion = MyCharacterInput.profReligion;
+	MyCharacter.profSleightOfHand = MyCharacterInput.profSleightOfHand;
+	MyCharacter.profStealth = MyCharacterInput.profStealth;
+	MyCharacter.profSurvival = MyCharacterInput.profSurvival;
+
+	recheckBoxes();
+	document.getElementById('MainScreenButton').style.visibility = 'visible';
 	document.getElementById('CharacterStatsButton').style.visibility = 'visible';
 	document.getElementById('CharacterSheetButton').style.visibility = 'hidden';
 	UpdateStats();

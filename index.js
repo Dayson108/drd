@@ -1,13 +1,18 @@
 var express = require('express');
 var app = express();
+var bodyParser = require('body-parser');
 var server = require('http').createServer(app);
 app.use('/', express.static(__dirname + '/'));
 var io = require('socket.io').listen(server);
-server.listen(process.env.PORT || 3000);
+app.use(bodyParser.urlencoded({extended: true}));
+var mongodb = require('mongodb');
 
-console.log("listening");
-var Comments = [];
+var Players = [];
+
 var PlayerList = [];
+var PlayerIndex = 0;
+
+
 var InitList = [];
 var GMData = {
 	CName: "",
@@ -15,9 +20,36 @@ var GMData = {
 	ID: ""
 };
 
+
+
+mongodb.MongoClient.connect('mongodb://dayson108:5tarw1nd@ds147797.mlab.com:47797/heroku_8xmzgt7g', function(err, database){
+	server.listen(process.env.PORT || 3000);
+	console.log("listening");
+	
+	
+	app.post('/comment', function(req, res){
+		database.collection('comment').save(req.body, function(err, result){
+			if(err){return console.log(err)};
+			res.redirect('/test');
+		});
+	});
+});
+
+app.get('/test', function(req, res){
+  res.sendFile(__dirname + '/html/Comment.html');
+});
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
+
+function findPlayersIndex(socket){
+		for(var i = 0; i < Players.length; i++){
+			if(Players[i].playerID == socket){
+				return i;
+			}
+		}		
+}
+
 
 io.on('connection', function(socket){
 	io.to(socket.id).emit('SendStartingData', socket.id, GMData, PlayerList, InitList);
@@ -30,6 +62,13 @@ io.on('connection', function(socket){
 	//io.to(socketid).emit('message', 'for your eyes only');
 		
 	socket.on('disconnect', function(){
+		if(socket.id != GMData.ID){
+			var rmvIndex = findPlayersIndex(socket.id);
+			Players.splice(rmvIndex, 1);
+			io.to(GMData.ID).emit('RcvGMData', Players);
+		}
+		
+		
 		//Removes from the player list*******
 		if(socket.id == GMData.ID){
 			GMData.CName = "";
@@ -49,11 +88,19 @@ io.on('connection', function(socket){
 				PlayerList.splice(index, 1);
 			}
 		}
- 
-		io.sockets.emit('UpdatePlayerList', PlayerList);		
+		io.sockets.emit('UpdatePlayerList', PlayerList);			
 		//***********************************
+		
+
 	});
 	
+	socket.on('UpdatePlayer', function(iChar){
+		var index = findPlayersIndex(socket.id);
+		Players[index] = iChar;
+		io.to(GMData.ID).emit('RcvGMData', Players);
+	});
+		
+		
 	socket.on('sidedDiceRoll', function(msg){
 		socket.broadcast.emit('sidedDiceResult', msg);
 	});
@@ -67,16 +114,28 @@ io.on('connection', function(socket){
 		GMData.PName = msg.PName;
 		GMData.ID = socket.id;
 		io.sockets.emit('UpdateGM', GMData, PlayerList);
+		io.to(GMData.ID).emit('RcvGMData', Players);
 	});
 	
+	socket.on('AddPlayer', function(msg){
+		var temp = msg;
+		Players.push(msg);
+		if(GMData.ID){
+			io.to(GMData.ID).emit('UpdatePlayerStats', Players);
+			io.to(GMData.ID).emit('RcvGMData', Players);
+		}	
+	});
+
+
 	socket.on('playerSubmitted', function(msg){
 		var newPlayer = {
 			charName: msg.CName,
 			playerName: msg.PName,
 			playerID: socket.id
 		};
+	
 		PlayerList.push(newPlayer);
-				io.sockets.emit('UpdatePlayerList', PlayerList);
+		io.sockets.emit('UpdatePlayerList', PlayerList);
 		
 	});
 	
@@ -90,22 +149,6 @@ io.on('connection', function(socket){
 	});
 	
 	
-	socket.on('Comment', function(iMsg, iPname){
-		var input = {
-			msg: iMsg,
-			PName: iPname
-		};
-		console.log(input);
-		Comments.push(input);
-	});
-	
-	socket.on('GetComments', function(){
-		io.to(socket.id).emit('rcvComments', Comments);
-		
-	});
-	socket.on('ClearComments', function(){
-		Comments = [];
-	});
 	
 	socket.on('InitRoll', function(input){
 		InitList.push(input);

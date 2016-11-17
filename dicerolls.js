@@ -128,7 +128,6 @@ function rolld20Dice(Plus, adv, skillNameTemp){
 }
 
 function rollSidedDice(sides, plus, diceNum, skillNameTemp){
-	console.log('woof');
   var dice = 0;
   var i = 0;
   var tempResult = "";

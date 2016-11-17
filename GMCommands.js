@@ -1,11 +1,13 @@
 function claimGMStatus(){
-	MyCharacter.PName = document.getElementById('GMName').value;
-	document.getElementById('NotesScreenButton').style.visibility = 'visible';
-	document.getElementById('CommentsScreenButton').style.visibility = 'visible';
-	if(MyCharacter.PName != ""){
-		document.getElementById('GMScreenButton').style.visibility = 'visible';
+	MyCharacter.PName = document.getElementById('PlayerName').value;
+	//if(MyCharacter.PName != ""){
+	if(MyCharacter.PName){
+		
 		showScreen('GMScreen');
+		document.getElementById('GMScreenButton').style.visibility = 'visible';
 		document.getElementById('clearInitButton').style.visibility = 'visible';
+		document.getElementById('NotesScreenButton').style.visibility = 'visible';
+		document.getElementById('CommentsScreenButton').style.visibility = 'visible';
 		//document.getElementById('GMFunScreenButton').style.visibility = 'visible';
 		
 		var msg = {
@@ -15,7 +17,7 @@ function claimGMStatus(){
 		socket.emit('GMSubmitted', msg);
 	}
 	else{
-		document.getElementById('GMName').style.backgroundColor = "red";
+		document.getElementById('PlayerName').style.backgroundColor = "red";
 		setTimeout(flashWhite, 1000);
 	}
 }
