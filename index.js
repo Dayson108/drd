@@ -158,6 +158,11 @@ io.on('connection', function(socket){
 	socket.on('ClearInit', function(){
 		InitList = [];
 		io.sockets.emit('ClearInitRecieved');
+	});	
+	
+	socket.on('ChatMsgSend', function(msg){
+		console.log('Msg Recieved: ' + msg)
+		io.sockets.emit('ChatMsgRcv', msg);
 	});
 
 

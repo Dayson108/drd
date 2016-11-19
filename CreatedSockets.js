@@ -50,6 +50,9 @@ socket.on('PvtMsgRcv', function(msg){
 		updateResultList(msg);
 });
 
+socket.on('ChatMsgRcv', function(msg){
+		updateChat(msg);
+});
 
 
 

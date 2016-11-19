@@ -166,6 +166,23 @@ function updatePrivateMsgList(){
 }
 
 
+function submitPlayerStats(){
+	MyCharacter.HPCurrent = document.getElementById('PlayerStatusCurrentHP').value;
+	MyCharacter.TempHPCurrent = document.getElementById('PlayerStatusTempHP').value;
+	MyCharacter.TempHPMax = document.getElementById('PlayerStatusTempMaxHP').value;
+	MyCharacter.ACMod = document.getElementById('PlayerStatusACMod').value;
+	socket.emit('UpdatePlayer', MyCharacter);
+}
+
+function updatePlayerStatsMenu(){
+	var tempOutput = "";
+	tempOutput += 'HP: <input type="text" id="PlayerStatusCurrentHP" size="1" value="' + MyCharacter.HPCurrent + '"> / ' + MyCharacter.HPMax + ' <br>';
+	tempOutput += 'Temp HP: <input type="text" id="PlayerStatusTempHP" size="1" value="' + MyCharacter.TempHPCurrent + '"> / <input type="text" id="PlayerStatusTempMaxHP" size="1" value="' + MyCharacter.TempHPMax + '"> <br>';
+	tempOutput += 'Current AC: ' + MyCharacter.BaseAC + ' + <input type="text" id="PlayerStatusACMod" size="1" value="' + MyCharacter.ACMod + '"><br>';
+	tempOutput += '<button id="SubmitStatUpdate" onclick="submitPlayerStats()">Submit</button><hr>';
+	document.getElementById('PlayerStats').innerHTML = tempOutput;
+	
+}
 
 
 
