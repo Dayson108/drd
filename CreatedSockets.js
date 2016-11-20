@@ -1,14 +1,10 @@
 var socket = io.connect();
 
-socket.on('20DiceResult', function(msg){
-	updateResultList(msg);
-});
-
-socket.on('sidedDiceResult', function(msg){
-	updateResultList(msg);
-});
 
 
+
+
+	
 socket.on('RcvGMData', function(iPlayers){
 	GMUpdatePlayerStats(iPlayers);
 });
@@ -19,7 +15,7 @@ socket.on('UpdateGM', function(GMInput){
 	GMData.PName = GMInput.PName;
 	GMData.CName = GMInput.CName;
 	updatePlayerList();
-	updatePrivateMsgList();
+	//updatePrivateMsgList();
 	if(GMData.ID){
 		document.getElementById('ClaimGMButton').style.visibility = 'hidden';
 	}
@@ -28,7 +24,7 @@ socket.on('UpdateGM', function(GMInput){
 socket.on('UpdatePlayerList', function(ServerPlayerList){
 	LocalPlayerList = ServerPlayerList;
 	updatePlayerList();
-	updatePrivateMsgList();
+	//updatePrivateMsgList();
 });
 
 socket.on('SendStartingData', function(IDNum, GMDataRecieved, ServerPlayerList, ServerInitList){
@@ -47,7 +43,7 @@ socket.on('ClearGM', function(GMDataRecieved){
 });
 
 socket.on('PvtMsgRcv', function(msg){
-		updateResultList(msg);
+		updateChat(msg);
 });
 
 socket.on('ChatMsgRcv', function(msg){

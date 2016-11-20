@@ -19,8 +19,9 @@ var LocalPlayerList = [];
 var privateMsgTable = [];
 
 var ChatMessages = [];
+var PrivateMessageIDList = [];
 
-var Players = [];
+//var Players = [];
 var privateLink = {
 	name: "",
 	id: ""
@@ -36,7 +37,7 @@ var GMData = {
 //Test Functions Only
 function test(input){
 	//socket.emit('Test');
-	
+
 }
 function test2(){
 	//socket.emit('Test');
@@ -53,38 +54,22 @@ function updateChat(input){
 	document.getElementById('ResultListMain').innerHTML = Output;
 }
 
+
 function sendMessage(msg){
 	if(document.getElementById("PrivateRoll").checked){
 		msg = "Private Message <br>" + msg;
 		updateChat(msg);
 	}else if(document.getElementById("PrivateMessage").checked){
-		//private message goes here
+		var temp = "Private Message from " + MyCharacter.CName + ": ";
+		socket.emit('SendPvtMsg', privateMsg[document.getElementById('privateMsg').selectedIndex].id , (temp+msg));
+		
+		var tempName = 'lemon'
+		temp = "Private Message to " + privateMsg[document.getElementById('privateMsg').selectedIndex].innerHTML + ": ";
+		console.log();
+		updateChat(temp + msg);
 	}else{
 		socket.emit('ChatMsgSend', msg);
 	}
-}
-
-
-
-
-function rollGMDice(sides, plus, diceNum){
-console.log('sides: ' + sides);
-console.log('plus: ' + plus);
-console.log('diceNum: ' + diceNum);
-
-	var tempName = MyCharacter.CName;
-	MyCharacter.CName = document.getElementById('GMRollName').value;
-	if(MyCharacter.CName == ""){MyCharacter.CName = tempName};
-	//var skillNameTemp;
-	if(sides == 20){
-		rolld20(plus, document.getElementById('GMRollType').value);
-
-	}else{
-	
-		rollSidedDice(diceNum, sides, plus);
-	}
-	
-	MyCharacter.CName = tempName;
 }
 
 
@@ -185,13 +170,13 @@ function flashWhite(){
 	<p><button id="NotesScreenButton" onclick="showScreen('Notes')" style="visibility:hidden">Version Notes</button></p>
 	<p><button id="CommentsScreenButton" onclick="showScreen('CommentFrame')" style="visibility:hidden">Report Issue</button></p>
 	<p><button id="DeveloperScreenButton" onclick="showScreen('Developer')" style="visibility:hidden">Developer</button></p>
-	<button id="testbutton2" onclick="test()" style="visibility:hidden">test</button><br>
+	<button id="testbutton2" onclick="test()" style="visibility:visible">test</button><br>
 	<button id="testbutton4" onclick="test2()" style="visibility:hidden">test2</button><br>
 </nav>
 
 <div id="Login" style="height:100%; width:500px; position:absolute; top:0px; left:75px; visibility:visible;">
 	<br><br>
-    Player Name: <input type="text" id="PlayerName" size="5" value="David"><br>
+    Player Name: <input type="text" id="PlayerName" size="5><br>
 	
 	<button id="Login" onclick="Login()">Create Character</button><button id="ClaimGMButton" onclick="claimGMStatus()">Claim Dungeon Master Status</button>
 	<hr><br><br>
@@ -259,9 +244,29 @@ ooga
 		<button id="GMAddInitButtonPrivate" onclick="GMAddToPrivateInit()">Add</button>
 	</div>
 	<div id="DMMacros" style="height:200px; width:300px; position:absolute; top:365px; left:200px;">
+		<input type="checkbox" id="DMMacroSuppressDice">Check this to hide dice
+		<hr>
 		Macro1:<br>
-		Character Name: <input type="text" id="DM1Name" style="width:100px;" value="Soren">
-		<input type="text" id="DM1" style="width:250px;" value="Attack or something: [3d12+8]"><button id="DM1B" onclick="DMmacro('DM1', 'DM1Name')">Send</button><hr>
+		Character Name: <input type="text" id="DM1Name" style="width:100px;"">
+		<input type="text" id="DM1" style="width:250px;"><button id="DM1B" onclick="DMmacro('DM1', 'DM1Name')">Send</button><hr>
+
+		Macro2:<br>
+		Character Name: <input type="text" id="DM2Name" style="width:100px;">
+		<input type="text" id="DM2" style="width:250px;"><button id="DM2B" onclick="DMmacro('DM2', 'DM2Name')">Send</button><hr>
+		
+		Macro3:<br>
+		Character Name: <input type="text" id="DM3Name" style="width:100px;">
+		<input type="text" id="DM3" style="width:250px;"><button id="DM3B" onclick="DMmacro('DM3', 'DM3Name')">Send</button><hr>
+		
+				Macro4:<br>
+		Character Name: <input type="text" id="DM4Name" style="width:100px;">
+		<input type="text" id="DM4" style="width:250px;"><button id="DM4B" onclick="DMmacro('DM4', 'DM4Name')">Send</button><hr>
+		
+				Macro5:<br>
+		Character Name: <input type="text" id="DM5Name" style="width:100px;">
+		<input type="text" id="DM5" style="width:250px;"><button id="DM5B" onclick="DMmacro('DM5', 'DM5Name')">Send</button><hr>
+		
+		
 	</div>
 </div>
 
@@ -346,18 +351,18 @@ ooga
 	Please Input your character's stats.<br>
 	If you are proficient in a skill or saving throw, select the checkbox next to it.
 	<hr>
-	Character Name: <input type="text" id="CharacterName" size="5" value="Soren"><br>
-	Character Level:<input type="text" id="MyLevel" style="width:30px" value="6">    Class:<input type="text" id="MyClass" style="width:60px" value="Druid"><br>
-	Armor Class: <input type="text" id="MyBaseAC" style="width:30px" value="10"><br>
-	Hit Point Max<input type="text" id="MyHPMax" style="width:30px" value="22">
+	Character Name: <input type="text" id="CharacterName" size="5"><br>
+	Character Level:<input type="text" id="MyLevel" style="width:30px">    Class:<input type="text" id="MyClass" style="width:60px"><br>
+	Armor Class: <input type="text" id="MyBaseAC" style="width:30px"><br>
+	Hit Point Max<input type="text" id="MyHPMax" style="width:30px">
 	<hr>
 	Input your character's core stats (not the +bonus)<br>
-	<input type="text" id="MySTR" style="width: 30px" value="14"><input type="checkbox" id="STRProfCheck">STR<br>
-	<input type="text" id="MyDEX" style="width: 30px" value="10"><input type="checkbox" id="DEXProfCheck">DEX<br>
-	<input type="text" id="MyCON" style="width: 30px" value="10"><input type="checkbox" id="CONProfCheck">CON<br>
-	<input type="text" id="MyINT" style="width: 30px" value="15"><input type="checkbox" id="INTProfCheck">INT<br>
-	<input type="text" id="MyWIS" style="width: 30px" value="20"><input type="checkbox" id="WISProfCheck">WIS<br>
-	<input type="text" id="MyCHA" style="width: 30px" value="18"><input type="checkbox" id="CHAProfCheck">CHA
+	<input type="text" id="MySTR" style="width: 30px"><input type="checkbox" id="STRProfCheck">STR<br>
+	<input type="text" id="MyDEX" style="width: 30px"><input type="checkbox" id="DEXProfCheck">DEX<br>
+	<input type="text" id="MyCON" style="width: 30px"><input type="checkbox" id="CONProfCheck">CON<br>
+	<input type="text" id="MyINT" style="width: 30px"><input type="checkbox" id="INTProfCheck">INT<br>
+	<input type="text" id="MyWIS" style="width: 30px"><input type="checkbox" id="WISProfCheck">WIS<br>
+	<input type="text" id="MyCHA" style="width: 30px"><input type="checkbox" id="CHAProfCheck">CHA
 	<hr>
 	<table>
 		<tr>

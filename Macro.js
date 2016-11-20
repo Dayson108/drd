@@ -51,7 +51,11 @@ function parseMacro(input, header){
 			startMark = 0;
 		}
 	}
-	input += '<br>' + endRolls;
+	
+	if(document.getElementById('DMMacroSuppressDice').checked != true){
+			input += '<br>' + endRolls;
+	}
+	
 	return input;
 }
 

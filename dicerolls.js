@@ -5,11 +5,45 @@ function ClearAdvDis(){
 	document.getElementById('RadioDisGM').checked = false;
 }
 
-function rollSavingThrow(plus, stat, save){
-	var Output = "";
-	var Result = 0;
-	Output += MyCharacter.CName + '(' + stat + '): ';	
+
+function rollStatThrow(Plus, Skill, SaveCheck, SaveProf){
+	if(document.getElementById(SaveCheck).checked){
+		Skill = Skill + " Save";
+		if(SaveProf){
+			console.log('prof save');
+			Plus += MyCharacter.ProfBonus;	
+		}
+		else{
+			console.log('non prof');
+		}
+	}
+	rolld20(Plus, Skill)
+	
 }
+
+
+function rollGMDice(sides, plus, diceNum){
+console.log('sides: ' + sides);
+console.log('plus: ' + plus);
+console.log('diceNum: ' + diceNum);
+
+	var tempName = MyCharacter.CName;
+	MyCharacter.CName = document.getElementById('GMRollName').value;
+	if(MyCharacter.CName == ""){MyCharacter.CName = tempName};
+	//var skillNameTemp;
+	if(sides == 20){
+		rolld20(plus, document.getElementById('GMRollType').value);
+
+	}else{
+	
+		rollSidedDice(diceNum, sides, plus);
+	}
+	
+	MyCharacter.CName = tempName;
+}
+
+
+
 function mainAdvCheck(){
 	if(document.getElementById('RadioAdv').checked || document.getElementById('RadioAdvGM').checked){
 		ClearAdvDis();console.log('adv!!');
