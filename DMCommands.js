@@ -1,20 +1,20 @@
-function claimGMStatus(){
+function claimDMStatus(){
 	MyCharacter.PName = document.getElementById('PlayerName').value;
 	//if(MyCharacter.PName != ""){
 	if(MyCharacter.PName){
 		
-		showScreen('GMScreen');
-		document.getElementById('GMScreenButton').style.visibility = 'visible';
+		//showScreen('DMMain');
+		showDMScreen('DMMain');
+		document.getElementById('DMScreenButton').style.visibility = 'visible';
 		document.getElementById('clearInitButton').style.visibility = 'visible';
 		document.getElementById('NotesScreenButton').style.visibility = 'visible';
 		document.getElementById('CommentsScreenButton').style.visibility = 'visible';
-		//document.getElementById('GMFunScreenButton').style.visibility = 'visible';
-		
+			
 		var msg = {
 			CName: 'Dungeon Master',
 			PName: MyCharacter.PName
 		};
-		socket.emit('GMSubmitted', msg);
+		socket.emit('DMSubmitted', msg);
 	}
 	else{
 		document.getElementById('PlayerName').style.backgroundColor = "red";
@@ -23,7 +23,7 @@ function claimGMStatus(){
 }
 
 
-function GMUpdatePlayerStats(iPlayers){
+function DMUpdatePlayerStats(iPlayers){
 	var tempOutput = "";
 	for(var i = 0; i < iPlayers.length; i++){
 		var AC = Number(iPlayers[i].BaseAC) + Number(iPlayers[i].ACMod);
@@ -46,5 +46,5 @@ function GMUpdatePlayerStats(iPlayers){
 		//Passiv Perception/Insight
 	}
 	
-	document.getElementById('GMPlayerStatsSide').innerHTML = tempOutput;
+	document.getElementById('DMPlayerStatsSide').innerHTML = tempOutput;
 }
